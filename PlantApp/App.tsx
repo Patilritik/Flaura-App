@@ -1,0 +1,89 @@
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import LoginScreen from './screens/LoginScreen';
+// import RegisterScreen from './screens/RegisterScreen';
+
+// const Stack = createNativeStackNavigator();
+
+// export default function AuthStack() {
+//   return (
+//     <Stack.Navigator
+//       screenOptions={{
+//         animation: 'slide_from_right', // 👈 Slide left-to-right
+//       }}
+//       initialRouteName="Login"
+//     >
+//       <Stack.Screen name="Login" component={LoginScreen} />
+//       <Stack.Screen name="Register" component={RegisterScreen} />
+//       {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
+//     </Stack.Navigator>
+//   );
+// }
+
+
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import HomeScreen from './screens/HomeScreen';
+import ToastManager from './components/Toast/ToastManager';
+import SearchResults from './screens/SearchResults';
+import ProductDescription from './screens/ProductDescription';
+import CartScreen from './screens/CartScreen';
+import UserProfile from './screens/UserProfile';
+import EditProfileScreen from './screens/EditProfileScreen';
+
+const Stack = createStackNavigator();
+
+// Custom transition for slide-in from the right
+const forSlide = ({ current, next, layouts }: { current: any; next?: any; layouts: any }) => {
+  return {
+    cardStyle: {
+      transform: [
+        {
+          translateX: current.progress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [layouts.screen.width, 0], // Slide in from right
+          }),
+        },
+        {
+          translateX: next
+            ? next.progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, -layouts.screen.width], // Slide out to left
+              })
+            : 0,
+        },
+      ],
+    },
+  };
+};
+
+function App() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <ToastManager />
+        <Stack.Navigator
+          initialRouteName="Login"
+          screenOptions={{
+            headerShown: false, // Hide the default header
+            cardStyleInterpolator: forSlide, // Apply slide animation
+          }}
+        >
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="SearchResults" component={SearchResults} />
+          <Stack.Screen name="ProductDescription" component={ProductDescription} />
+          <Stack.Screen name="CartScreen" component={CartScreen} />
+          <Stack.Screen name="UserProfile" component={UserProfile} />
+          <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
+  );
+}
+
+export default App;
