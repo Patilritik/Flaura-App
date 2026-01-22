@@ -61,28 +61,60 @@ const forSlide = ({ current, next, layouts }: { current: any; next?: any; layout
     },
   };
 };
+const commonHeaderOptions = {
+  headerTitleAlign: "center",
+  headerStyle: {
+    backgroundColor: "#fff",
+  },
+  headerTitleStyle: {
+    fontSize: 24,
+    fontFamily: "Poppins-Bold",
+    color: "#333",
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  headerTintColor: "#333",
+};
 
 function App() {
   return (
     <SafeAreaProvider>
     <GestureHandlerRootView style={{ flex: 1 }}>
+      
       <NavigationContainer>
         <ToastManager />
         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
         <Stack.Navigator
           initialRouteName="Login"
           screenOptions={{
-            headerShown: false, // Hide the default header
+            headerShown: true, // Hide the default header
             cardStyleInterpolator: forSlide, // Apply slide animation
           }}
         >
-          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} options={{headerShown : false}} />
           <Stack.Screen name="Register" component={RegisterScreen} />
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} options={{headerShown : false}}/>
           <Stack.Screen name="SearchResults" component={SearchResults} />
           <Stack.Screen name="ProductDescription" component={ProductDescription} />
-          <Stack.Screen name="CartScreen" component={CartScreen} />
-          <Stack.Screen name="UserProfile" component={UserProfile} />
+       <Stack.Screen
+          name="UserProfile"
+          component={UserProfile}
+          options={{
+            headerTitle: "User Profile",
+            headerBackTitle: "Go Ahead",
+          }}
+        />
+
+        <Stack.Screen
+          name="CartScreen"
+          component={CartScreen}
+          options={{
+            headerTitle: "My Cart",
+          }}
+        />
+
+
+
           <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
         </Stack.Navigator>
       </NavigationContainer>

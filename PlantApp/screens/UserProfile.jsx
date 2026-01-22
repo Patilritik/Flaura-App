@@ -96,7 +96,7 @@ const UserProfile = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <TouchableOpacity
           onPress={handleBackPress}
           style={styles.backButton}>
@@ -106,7 +106,7 @@ const UserProfile = () => {
           />
         </TouchableOpacity>
         <Text style={styles.headerText}>User Profile</Text>
-      </View>
+      </View> */}
 
       {loading ? (
         <View style={styles.loadingContainer}>
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 20,
-    paddingTop: 20, // Adjusted to account for header height
+    paddingTop: 10, // Adjusted to account for header height
     alignItems: 'center',
   },
   loadingContainer: {
