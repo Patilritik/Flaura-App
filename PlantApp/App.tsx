@@ -33,6 +33,7 @@ import ProductDescription from './screens/ProductDescription';
 import CartScreen from './screens/CartScreen';
 import UserProfile from './screens/UserProfile';
 import EditProfileScreen from './screens/EditProfileScreen';
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const Stack = createStackNavigator();
 
@@ -62,6 +63,7 @@ const forSlide = ({ current, next, layouts }: { current: any; next?: any; layout
 
 function App() {
   return (
+    <SafeAreaProvider>
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
         <ToastManager />
@@ -83,6 +85,7 @@ function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </GestureHandlerRootView>
+      </SafeAreaProvider>
   );
 }
 

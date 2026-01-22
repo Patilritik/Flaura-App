@@ -23,7 +23,8 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    default: 'https://via.placeholder.com/150', // Default avatar URL
+    // default: 'https://via.placeholder.com/150', // Default avatar URL
+    default: 'https://placehold.co/200x200', // Default avatar URL
   },
   phone: {
     type: String,

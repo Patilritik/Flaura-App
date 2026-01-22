@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
-  Alert,
   Text,
   View,
   StyleSheet,
@@ -15,7 +14,7 @@ import API_BASE_URL from '../apiConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import colors from '../utils/colors';
 import ToastManager from '../components/Toast/ToastManager';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 const UserProfile = () => {
   const [userDetails, setUserDetails] = useState({});
@@ -80,9 +79,11 @@ const UserProfile = () => {
     navigation.navigate('EditProfileScreen', { userDetails }); // Replace with your edit profile screen route
   };
 
-  useEffect(() => {
-    getUserDetails();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      getUserDetails();
+    }, [])
+  ); // Refresh data every time screen is focused
 
   return (
     <SafeAreaView style={styles.container}>

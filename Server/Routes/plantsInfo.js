@@ -87,4 +87,65 @@ router.get('/plants_info/:id', async (req, res) => {
     }
 });
 
+// ADD NEW PLANT
+router.post('/plants_info', async (req, res) => {
+    console.log("Req body",req.body);
+    return;
+ 
+    try {
+    const {
+      commonName,
+      scientificName,
+      category,
+      description,
+      careTips,
+      price,
+      image,
+      image_url,
+      toxicity,
+      maintenance,
+      airPurifying,
+    } = req.body;
+
+    // Basic validation
+    if (
+      !commonName ||
+      !scientificName ||
+      !category ||
+      !description ||
+      !careTips ||
+      !price ||
+      !image ||
+      !image_url
+    ) {
+      return res.status(400).json({ message: 'All required fields must be provided' });
+    }
+
+    const newPlant = new Plant({
+      commonName,
+      scientificName,
+      category,
+      description,
+      careTips,
+      price,
+      image,
+      image_url,
+      toxicity,
+      maintenance,
+      airPurifying,
+    });
+
+    const savedPlant = await newPlant.save();
+
+    res.status(201).json({
+      message: 'Plant added successfully',
+      data: savedPlant,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 module.exports = router;

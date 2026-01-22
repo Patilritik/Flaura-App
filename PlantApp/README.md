@@ -1,3 +1,10 @@
+
+username : notdemo96_db_user
+password : YyZDlzXft06G0ACA
+
+mongodb+srv://notdemo96_db_user:YyZDlzXft06G0ACA@plantapp.r3uhsg6.mongodb.net/
+
+
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started

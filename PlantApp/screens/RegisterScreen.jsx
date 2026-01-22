@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Animated,
   Easing,
+  Alert,
 } from 'react-native';
 import InputField from '../components/InputField';
 import API_BASE_URL from '../apiConfig';
@@ -159,7 +160,7 @@ const RegisterScreen = ({ navigation }) => {
         email,
         password,
       });
-
+      console.log('Registration response:', response.data);
       ToastManager.show({
         message: 'Registration successful!',
         type: 'success',
@@ -167,6 +168,7 @@ const RegisterScreen = ({ navigation }) => {
       });
       navigation.navigate('Login');
     } catch (error) {
+       
       ToastManager.show({
         message:
           error?.response?.data?.message || 'Registration failed. Try again!',

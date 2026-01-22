@@ -57,7 +57,7 @@ const EditProfileScreen = () => {
           message: 'Profile updated successfully.',
           duration: 3000,
         });
-        navigation.goBack(); // Navigate back to UserProfile
+        navigation.goBack(); // Navigate back to UserProfile (will auto-refresh via useFocusEffect)
       }
     } catch (error) {
       console.error('Error updating profile:', error);
