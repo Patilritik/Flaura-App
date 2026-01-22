@@ -34,6 +34,7 @@ import CartScreen from './screens/CartScreen';
 import UserProfile from './screens/UserProfile';
 import EditProfileScreen from './screens/EditProfileScreen';
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { StatusBar } from 'react-native';
 
 const Stack = createStackNavigator();
 
@@ -67,6 +68,7 @@ function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
         <ToastManager />
+        <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
         <Stack.Navigator
           initialRouteName="Login"
           screenOptions={{

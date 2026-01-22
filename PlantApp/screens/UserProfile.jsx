@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   ScrollView,
+  StatusBar,
 } from 'react-native';
 import API_BASE_URL from '../apiConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -79,6 +80,14 @@ const UserProfile = () => {
     navigation.navigate('EditProfileScreen', { userDetails }); // Replace with your edit profile screen route
   };
 
+  const handleBackPress = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      navigation.navigate('HomeScreen'); // Navigate to home if no back history
+    }
+  };
+
   useFocusEffect(
     React.useCallback(() => {
       getUserDetails();
@@ -89,7 +98,7 @@ const UserProfile = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
+          onPress={handleBackPress}
           style={styles.backButton}>
           <Image
             source={require('../assets/back_arrow_icon.png')}
@@ -160,6 +169,7 @@ const UserProfile = () => {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: StatusBar.currentHeight, 
     flex: 1,
     backgroundColor: '#f5f5f5',
   },

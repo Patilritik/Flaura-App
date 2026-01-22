@@ -10,6 +10,9 @@ import {
   Image,
   ActivityIndicator,
   Alert,
+  StatusBar,
+  KeyboardAvoidingView,
+  Platform
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
@@ -95,7 +98,17 @@ const EditProfileScreen = () => {
         <Text style={styles.headerText}>Edit Profile</Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+<KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.select({ ios: 80, android: (StatusBar.currentHeight || 0) + 60 })}
+     >
+
+       <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+       >
         <View style={styles.formContainer}>
           {/* Name Input */}
           <View style={styles.inputContainer}>
@@ -176,12 +189,14 @@ const EditProfileScreen = () => {
 
         <View style={styles.bottomSpacer} />
       </ScrollView>
+    </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+      marginTop: StatusBar.currentHeight,
     flex: 1,
     backgroundColor: '#f5f5f5',
   },
@@ -211,7 +226,8 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 20,
-    paddingTop: 80, // Adjusted for header height
+    paddingTop: StatusBar.currentHeight , // Adjusted for header height
+    paddingBottom: 40,
   },
   formContainer: {
     width: '100%',

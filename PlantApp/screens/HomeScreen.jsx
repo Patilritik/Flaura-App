@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Alert,
   SafeAreaView,
+  StatusBar,
 } from 'react-native';
 import axios from 'axios';
 import API_BASE_URL from '../apiConfig';
@@ -315,6 +316,7 @@ const styles = StyleSheet.create({
     paddingBottom: 100, // Ensure content is not hidden under bottom nav
   },
   searchContainer: {
+    marginTop: StatusBar.currentHeight,
     marginBottom: 20,
   },
   searchHeader: {
