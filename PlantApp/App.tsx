@@ -84,13 +84,24 @@ function App() {
       <NavigationContainer>
         <ToastManager />
         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-        <Stack.Navigator
-          initialRouteName="Login"
-          screenOptions={{
-            headerShown: true, // Hide the default header
-            cardStyleInterpolator: forSlide, // Apply slide animation
-          }}
-        >
+          <Stack.Navigator
+                initialRouteName="Login"
+                screenOptions={{
+                  cardStyleInterpolator: forSlide,
+                  headerShown: true,
+                  headerTitleAlign: 'center',
+                  headerStyle: {
+                    backgroundColor: '#fff',
+                  },
+                  headerTitleStyle: {
+                    fontSize: 24,
+                    fontFamily: 'Poppins-Bold',
+                    color: '#333',
+                    fontWeight: '600',
+                    textAlign: 'center',
+                  },
+                  headerTintColor: '#333',
+                }}>
           <Stack.Screen name="Login" component={LoginScreen} options={{headerShown : false}} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="Home" component={HomeScreen} options={{headerShown : false}}/>
