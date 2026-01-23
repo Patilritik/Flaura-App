@@ -34,6 +34,8 @@ import UserProfile from './screens/UserProfile';
 import EditProfileScreen from './screens/EditProfileScreen';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StatusBar} from 'react-native';
+import FavoritesScreen from './screens/FavouriteScreen';
+import SplashScreen from './screens/SplashScreen';
 
 const Stack = createStackNavigator();
 
@@ -91,7 +93,7 @@ function App() {
           <ToastManager />
           <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
           <Stack.Navigator
-            initialRouteName="Login"
+            initialRouteName="SplashScreen"
             screenOptions={{
               cardStyleInterpolator: forSlide,
               headerShown: true,
@@ -155,6 +157,19 @@ function App() {
                 headerTitle: 'Edit Profile',
               }}
             />
+            <Stack.Screen
+              name="FavouriteScreen"
+              component={FavoritesScreen}
+              options={{
+                headerTitle: 'Favourite Screen',
+              }}
+            />
+            <Stack.Screen
+              name="SplashScreen"
+              component={SplashScreen}
+              options={{ headerShown: false }}
+            />
+
           </Stack.Navigator>
         </NavigationContainer>
       </GestureHandlerRootView>

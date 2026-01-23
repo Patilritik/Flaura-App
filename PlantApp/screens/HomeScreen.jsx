@@ -254,7 +254,7 @@ const HomeScreen = () => {
 
   const handleFavoritesPress = () => {
     setActiveTab('Favorites');
-    navigation.navigate('FavoritesScreen'); // Adjust route as needed
+    navigation.navigate('FavouriteScreen'); // Adjust route as needed
   };
 
   const handlePrimaryPress = () => {
