@@ -163,12 +163,12 @@ const SearchResults = ({ navigation }) => {
           transform: [{ scale: searchBarScale }],
         },
       ]}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        {/* <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Image
             source={require('../assets/back_arrow_icon.png')}
             style={styles.backIcon}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <View style={styles.inputContainer}>
           <Image
             source={require('../assets/search_icon.png')}

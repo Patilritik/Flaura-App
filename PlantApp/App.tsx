@@ -19,11 +19,10 @@
 //   );
 // }
 
-
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -33,13 +32,21 @@ import ProductDescription from './screens/ProductDescription';
 import CartScreen from './screens/CartScreen';
 import UserProfile from './screens/UserProfile';
 import EditProfileScreen from './screens/EditProfileScreen';
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { StatusBar } from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {StatusBar} from 'react-native';
 
 const Stack = createStackNavigator();
 
 // Custom transition for slide-in from the right
-const forSlide = ({ current, next, layouts }: { current: any; next?: any; layouts: any }) => {
+const forSlide = ({
+  current,
+  next,
+  layouts,
+}: {
+  current: any;
+  next?: any;
+  layouts: any;
+}) => {
   return {
     cardStyle: {
       transform: [
@@ -62,75 +69,96 @@ const forSlide = ({ current, next, layouts }: { current: any; next?: any; layout
   };
 };
 const commonHeaderOptions = {
-  headerTitleAlign: "center",
+  headerTitleAlign: 'center',
   headerStyle: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   headerTitleStyle: {
     fontSize: 24,
-    fontFamily: "Poppins-Bold",
-    color: "#333",
-    fontWeight: "600",
-    textAlign: "center",
+    fontFamily: 'Poppins-Bold',
+    color: '#333',
+    fontWeight: '600',
+    textAlign: 'center',
   },
-  headerTintColor: "#333",
+  headerTintColor: '#333',
 };
 
 function App() {
   return (
     <SafeAreaProvider>
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      
-      <NavigationContainer>
-        <ToastManager />
-        <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+      <GestureHandlerRootView style={{flex: 1}}>
+        <NavigationContainer>
+          <ToastManager />
+          <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
           <Stack.Navigator
-                initialRouteName="Login"
-                screenOptions={{
-                  cardStyleInterpolator: forSlide,
-                  headerShown: true,
-                  headerTitleAlign: 'center',
-                  headerStyle: {
-                    backgroundColor: '#fff',
-                  },
-                  headerTitleStyle: {
-                    fontSize: 24,
-                    fontFamily: 'Poppins-Bold',
-                    color: '#333',
-                    fontWeight: '600',
-                    textAlign: 'center',
-                  },
-                  headerTintColor: '#333',
-                }}>
-          <Stack.Screen name="Login" component={LoginScreen} options={{headerShown : false}} />
-          <Stack.Screen name="Register" component={RegisterScreen} />
-          <Stack.Screen name="Home" component={HomeScreen} options={{headerShown : false}}/>
-          <Stack.Screen name="SearchResults" component={SearchResults} />
-          <Stack.Screen name="ProductDescription" component={ProductDescription} />
-       <Stack.Screen
-          name="UserProfile"
-          component={UserProfile}
-          options={{
-            headerTitle: "User Profile",
-            headerBackTitle: "Go Ahead",
-          }}
-        />
+            initialRouteName="Login"
+            screenOptions={{
+              cardStyleInterpolator: forSlide,
+              headerShown: true,
+              headerTitleAlign: 'center',
+              headerStyle: {
+                backgroundColor: '#fff',
+              },
+              headerTitleStyle: {
+                fontSize: 24,
+                fontFamily: 'Poppins-Bold',
+                color: '#333',
+                fontWeight: '600',
+                textAlign: 'center',
+              },
+              headerTintColor: '#333',
+            }}>
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="SearchResults"
+              component={SearchResults}
+              options={{headerTitle: 'Search Result'}}
+            />
+            <Stack.Screen
+              name="ProductDescription"
+              component={ProductDescription}
+              options={{
+                headerTitle: 'Product Description',
+              }}
+            />
+            <Stack.Screen
+              name="UserProfile"
+              component={UserProfile}
+              options={{
+                headerTitle: 'User Profile',
+                headerBackTitle: 'Go Ahead',
+              }}
+            />
 
-        <Stack.Screen
-          name="CartScreen"
-          component={CartScreen}
-          options={{
-            headerTitle: "My Cart",
-          }}
-        />
+            <Stack.Screen
+              name="CartScreen"
+              component={CartScreen}
+              options={{
+                headerTitle: 'My Cart',
+              }}
+            />
 
-
-
-          <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </GestureHandlerRootView>
-      </SafeAreaProvider>
+            <Stack.Screen
+              name="EditProfileScreen"
+              component={EditProfileScreen}
+              options={{
+                headerTitle: 'Edit Profile',
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    </SafeAreaProvider>
   );
 }
 

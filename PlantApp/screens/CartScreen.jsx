@@ -168,7 +168,7 @@ const CartScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       {/* Fixed Header */}
-      <View style={styles.headerContainer}>
+      {/* <View style={styles.headerContainer}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={styles.backButton}>
@@ -178,7 +178,7 @@ const CartScreen = () => {
           />
         </TouchableOpacity>
         <Text style={styles.header}>My Cart</Text>
-      </View>
+      </View> */}
 
       {/* Scrollable Content */}
       <ScrollView

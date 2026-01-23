@@ -134,7 +134,7 @@ const ProductDescription = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       {/* Custom Header with Back Button and Cart Icon */}
-      <View style={styles.customHeader}>
+      {/* <View style={styles.customHeader}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.headerButton}>
           <Image
             source={require('../assets/back_arrow_icon.png')}
@@ -150,7 +150,7 @@ const ProductDescription = ({ route, navigation }) => {
             style={styles.headerIcon}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <ScrollView
         style={styles.scrollContainer}

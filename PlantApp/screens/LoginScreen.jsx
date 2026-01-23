@@ -148,10 +148,6 @@ const LoginScreen = ({ navigation }) => {
         type: 'success',
         duration: 4000,
       });
-      // localStorage.setItem('token', response?.data?.token);
-      // localStorage.setItem('email', response?.data?.email);
-      // localStorage.setItem('userId', response?.data?.userId);
-
       await AsyncStorage.setItem('token', response?.data?.token);
       await AsyncStorage.setItem('email', response?.data?.email);
       await AsyncStorage.setItem('userId', response?.data?.userId);

@@ -76,7 +76,7 @@ const EditProfileScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <TouchableOpacity
           onPress={() =>
             Alert.alert(
@@ -96,7 +96,7 @@ const EditProfileScreen = () => {
           />
         </TouchableOpacity>
         <Text style={styles.headerText}>Edit Profile</Text>
-      </View>
+      </View> */}
 
 <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 20,
-    paddingTop: StatusBar.currentHeight , // Adjusted for header height
+    // paddingTop: StatusBar.currentHeight , // Adjusted for header height
     paddingBottom: 40,
   },
   formContainer: {
