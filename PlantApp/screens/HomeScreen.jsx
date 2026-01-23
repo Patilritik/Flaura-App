@@ -245,32 +245,7 @@ const HomeScreen = () => {
     { type: 'spacer', id: 'spacer-1' },
   ].filter(item => !loading || (item.type !== 'product' && item.type !== 'spacer'));
 
-  // Navigation handlers for bottom bar
-  const [activeTab, setActiveTab] = useState('Home');
-  const handleHomePress = () => {
-    setActiveTab('Home');
-    navigation.navigate('HomeScreen');
-  };
 
-  const handleFavoritesPress = () => {
-    setActiveTab('Favorites');
-    navigation.navigate('FavouriteScreen'); // Adjust route as needed
-  };
-
-  const handlePrimaryPress = () => {
-    setActiveTab('Primary');
-    navigation.navigate('PrimaryScreen'); // Adjust route as needed
-  };
-
-  const handleCartPress = () => {
-    setActiveTab('Cart');
-    navigation.navigate('CartScreen');
-  };
-
-  const handleAccountPress = () => {
-    setActiveTab('Account');
-    navigation.navigate('UserProfile');
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -283,25 +258,7 @@ const HomeScreen = () => {
       />
 
       {/* Fixed Bottom Navigation Bar */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navButton} onPress={handleHomePress}>
-          <Image source={require('../assets/home_icon.png')} style={[styles.navIcon, activeTab === 'Home' && { tintColor: colors.primaryGreen }]} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton} onPress={handleFavoritesPress}>
-          <Image source={require('../assets/favourite_icon.png')} style={[styles.navIcon, activeTab === 'Favorites' && { tintColor: colors.primaryGreen }]} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navPrimaryButton} onPress={handlePrimaryPress}>
-          <View style={styles.primaryCircle}>
-            <Image source={require('../assets/qrcode_icon.png')} style={styles.primaryIcon} />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton} onPress={handleCartPress}>
-          <Image source={require('../assets/cart_icon.png')} style={[styles.navIcon, activeTab === 'Cart' && { tintColor: colors.primaryGreen }]} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton} onPress={handleAccountPress}>
-          <Image source={require('../assets/account_icon.png')} style={[styles.navIcon, activeTab === 'Account' && { tintColor: colors.primaryGreen }]} />
-        </TouchableOpacity>
-      </View>
+
     </SafeAreaView>
   );
 };
@@ -423,57 +380,7 @@ const styles = StyleSheet.create({
   bottomSpacer: {
     height: 50,
   },
-  bottomNav: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    elevation: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: -2 },
-  },
-  navButton: {
-    alignItems: 'center',
-    padding: 5,
-  },
-  navPrimaryButton: {
-    alignItems: 'center',
-    padding: 5,
-    transform: [{ translateY: -15 }], // Lift the central button
-  },
-  primaryCircle: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#000',
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    shadowOffset: { width: 0, height: 2 },
-  },
-  primaryIcon: {
-    width: 24,
-    height: 24,
-    tintColor: '#fff',
-  },
-  navIcon: {
-    width: 24,
-    height: 24,
-    tintColor: '#666',
-  },
+
 });
 
 export default HomeScreen;

@@ -152,6 +152,7 @@ const LoginScreen = ({ navigation }) => {
       await AsyncStorage.setItem('email', response?.data?.email);
       await AsyncStorage.setItem('userId', response?.data?.userId);
       navigation.navigate('Home');
+
     } catch (error) {
       console.log("Login error:", error?.response?.data);
       ToastManager.show({

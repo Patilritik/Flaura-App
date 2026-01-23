@@ -16,7 +16,7 @@ const SplashScreen = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.replace('Login'); // ya LoginScreen
-    }, 500);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -26,10 +26,10 @@ const SplashScreen = () => {
       <StatusBar backgroundColor={colors.primaryGreen} barStyle="light-content" />
 
       <View style={styles.logoContainer}>
-        {/* <Image
+        <Image
           source={require('../assets/app_logo.png')}
           style={styles.logo}
-        /> */}
+        />
         <Text style={styles.appName}>Plantify</Text>
         <Text style={styles.tagline}>Grow Green, Live Clean 🌱</Text>
       </View>
