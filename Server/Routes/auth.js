@@ -1,11 +1,33 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const User = require('../models/UserModal');
 const Plant = require('../models/PlantModal'); // Import the Plant model
+require('dotenv').config();
+
 
 const router = express.Router();
 
+// 1. Cloudinary Config
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET // Use your real secret here
+});
+
+// 2. Multer Storage Config
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'user_avatars',
+    allowed_formats: ['jpg', 'png', 'jpeg'],
+  },
+});
+
+const upload = multer({ storage: storage });
 // Register a new user
 router.post('/register', async (req, res) => {
   const { email, password  } = req.body;
@@ -87,21 +109,40 @@ router.get('/user/:id', async (req, res) => {
 );
 
 // Update user details
-router.put('/user/:id', async (req, res) => {
-  const { id } = req.params;
-  const { name, email, phone, address, avatar } = req.body;
+router.put('/user/:id', upload.single('avatar'), async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(
-      id,
-      { name, email, phone, address, avatar },
-      { new: true } // Return the updated user
-    );
+    const { id } = req.params;
+    const { name, phone, address , avatar } = req.body;
+
+    let updateData = { name, phone, address , avatar };
+
+    // If a file was uploaded, Cloudinary returns the URL in req.file.path
+    if (req.file) {
+      updateData.avatar = req.file.path;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(id, updateData, { new: true });
+
+    if (!updatedUser) return res.status(404).json({ message: "User not found" });
+    
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
+//Get user's favorite plants
+router.get('/user/:id/favorites', async (req, res) => {
+  const { id } =  req.params;  
+  try {
+    const user = await User.findById(id).populate('favorites');
+    console.log("user favorites",user);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    res.status(200).json(user);
-  }
-  catch (error) {
+    res.status(200).json(user.favorites);
+  } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
   }

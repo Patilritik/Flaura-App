@@ -34,6 +34,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'N/A', // Default address
   },
+  favorites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Plant', // This should match the name you used in mongoose.model('Plant', ...)
+    }
+  ],
 
 });
 

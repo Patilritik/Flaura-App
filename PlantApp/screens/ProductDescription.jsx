@@ -1,25 +1,35 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
+import React, {useEffect, useState, useCallback} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  ActivityIndicator,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import axios from 'axios';
 import API_BASE_URL from '../apiConfig';
 import colors from '../utils/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ToastManager from '../components/Toast/ToastManager';
 
-const ProductDescription = ({ route, navigation }) => {
-  const { product } = route.params;
+const ProductDescription = ({route, navigation}) => {
+  const {product} = route.params;
   const [productInfo, setProductInfo] = useState({});
   const [loading, setLoading] = useState(true);
   const [cartCount, setCartCount] = useState(0);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   // Disable default navigation header
-//   useEffect(() => {
-//     navigation.setOptions({
-// //  psalm: false, // Remove default header
-//     });
-//   }, [navigation]);
+  //   useEffect(() => {
+  //     navigation.setOptions({
+  // //  psalm: false, // Remove default header
+  //     });
+  //   }, [navigation]);
 
-  const getPlantInfo = async (id) => {
+  const getPlantInfo = async id => {
     setLoading(true);
     try {
       const response = await axios.get(`${API_BASE_URL}api/plants_info/${id}`);
@@ -44,38 +54,93 @@ const ProductDescription = ({ route, navigation }) => {
         userId: userId,
         product_id: product._id,
       };
-      const response = await axios.post(`${API_BASE_URL}api/get_cart_item`, payload);
+      const response = await axios.post(
+        `${API_BASE_URL}api/get_cart_item`,
+        payload,
+      );
       setCartCount(response?.data?.cart_count || 100); // Set cart count from response
     } catch (error) {
       setCartCount(0); // Fallback to 0 on error
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
 
+  const toggleFavorite = async () => {
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+      if (!userId) {
+        ToastManager.show({
+          type: 'error',
+          message: 'Please login to add favorites',
+          duration: 3000,
+        });
+        return;
+      }
+
+      const previousState = isFavorite;
+      setIsFavorite(!previousState); // Optimistic UI update
+      const response = await axios.post(`${API_BASE_URL}api/toggle_favorite`, {
+        userId,
+        product_id: product._id,
+      });
+
+      ToastManager.show(
+        {
+          type: 'success',
+          message: !previousState
+            ? 'Added to Favorites'
+            : 'Removed from Favorites',
+        },
+        1000,
+      );
+    } catch (error) {
+      setIsFavorite(isFavorite); // Revert on error
+      console.error('Favorite toggle error:', error);
+    }
+  };
+
+  const checkIfFavorite = useCallback(async () => {
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+      if (!userId) {
+        setIsFavorite(false);
+        return;
+      }
+      const response = await axios.get(`${API_BASE_URL}api/check_favourites/${userId}/${product._id}`);
+      setIsFavorite(response.data.isFavorite);
+    } catch (error) {
+      console.error('Error checking favorite status:', error);
+    }
+  }, [product._id]);
+
   useEffect(() => {
     getPlantInfo(product._id);
     getCartItemCount();
-  }, [product._id]);
+    checkIfFavorite();
+  }, [product._id, checkIfFavorite]);
 
   const updateCartItem = async (userId, productId, cartCount) => {
     try {
-      if(!userId){
+      if (!userId) {
         ToastManager.show({
           type: 'error',
           message: 'User ID not found. Please log in.',
           duration: 3000,
         });
       }
-      const payload = { userId, product_id: productId, cartCount };
-      const response = await axios.post(`${API_BASE_URL}api/update_cart`, payload);
+      const payload = {userId, product_id: productId, cartCount};
+      const response = await axios.post(
+        `${API_BASE_URL}api/update_cart`,
+        payload,
+      );
       console.log('Cart item updated:', response.data);
       ToastManager.show({
         type: 'success',
-        message: cartCount === 0 
-          ? `Item removed from cart: ${productInfo.commonName}`
-          : `Item updated in cart: ${productInfo.commonName} (${cartCount})`,
+        message:
+          cartCount === 0
+            ? `Item removed from cart: ${productInfo.commonName}`
+            : `Item updated in cart: ${productInfo.commonName} (${cartCount})`,
         duration: 3000,
       });
     } catch (error) {
@@ -88,17 +153,15 @@ const ProductDescription = ({ route, navigation }) => {
     }
   };
 
-
   // Handle cart count increase
   const handleIncrease = async () => {
-    if(cartCount < 20) {
-    const newCount = cartCount + 1;
-    setCartCount(newCount);
-    // Replace 'user-id-placeholder' with actual user ID (e.g., from auth context)
-    const userId = await  AsyncStorage.getItem('userId'); // Example of getting user ID from AsyncStorage 
-    updateCartItem(userId, product._id, newCount);
-    }
-    else {
+    if (cartCount < 20) {
+      const newCount = cartCount + 1;
+      setCartCount(newCount);
+      // Replace 'user-id-placeholder' with actual user ID (e.g., from auth context)
+      const userId = await AsyncStorage.getItem('userId'); // Example of getting user ID from AsyncStorage
+      updateCartItem(userId, product._id, newCount);
+    } else {
       ToastManager.show({
         type: 'error',
         message: 'You can add a maximum of 20 items to the cart.',
@@ -109,12 +172,12 @@ const ProductDescription = ({ route, navigation }) => {
 
   // Handle cart count decrease
   const handleDecrease = async () => {
-    if (cartCount > 0){
+    if (cartCount > 0) {
       const newCount = cartCount - 1;
       setCartCount(newCount);
       const userId = await AsyncStorage.getItem('userId');
       updateCartItem(userId, product._id, newCount);
-    }else{
+    } else {
       ToastManager.show({
         type: 'error',
         message: 'Cart count cannot be less than 0.',
@@ -155,34 +218,55 @@ const ProductDescription = ({ route, navigation }) => {
 
       <ScrollView
         style={styles.scrollContainer}
-        contentContainerStyle={styles.scrollContent}
-      >
+        contentContainerStyle={styles.scrollContent}>
         {/* Product Image */}
         {(productInfo.image_url || productInfo.image) && (
           <View style={styles.imageContainer}>
             <Image
-              source={{ uri: productInfo.image_url || productInfo.image }}
+              source={{uri: productInfo.image_url || productInfo.image}}
               style={styles.productImage}
               resizeMode="cover"
             />
+            {/* 4. Heart Icon Overlay */}
+            <TouchableOpacity
+              style={styles.favoriteBadge}
+              onPress={toggleFavorite}
+              activeOpacity={0.7}>
+              <Image
+                source={
+                  isFavorite
+                    ? require('../assets/heart_filled_icon.png')
+                    : require('../assets/heart_blank_icon.png')
+                }
+                style={styles.headerIcon}
+              />
+            </TouchableOpacity>
           </View>
         )}
 
         <View style={styles.content}>
           {/* Product Name with Cart Control */}
           <View style={styles.nameContainer}>
-            <Text style={styles.title}>{productInfo.commonName || 'Unnamed Product'}</Text>
+            <Text style={styles.title}>
+              {productInfo.commonName || 'Unnamed Product'}
+            </Text>
             <View style={styles.cartControl}>
-              <TouchableOpacity style={styles.cartButton} onPress={handleDecrease}>
+              <TouchableOpacity
+                style={styles.cartButton}
+                onPress={handleDecrease}>
                 <Text style={styles.cartButtonText}>−</Text>
               </TouchableOpacity>
               <Text style={styles.cartCount}>{cartCount}</Text>
-              <TouchableOpacity style={styles.cartButton} onPress={handleIncrease}>
+              <TouchableOpacity
+                style={styles.cartButton}
+                onPress={handleIncrease}>
                 <Text style={styles.cartButtonText}>+</Text>
               </TouchableOpacity>
             </View>
           </View>
-          <Text style={styles.subtitle}>{productInfo?.scientificName || 'Unknown Species'}</Text>
+          <Text style={styles.subtitle}>
+            {productInfo?.scientificName || 'Unknown Species'}
+          </Text>
 
           {/* Description */}
           <Text style={styles.description}>
@@ -190,7 +274,9 @@ const ProductDescription = ({ route, navigation }) => {
           </Text>
 
           {/* Requirements and Specifications Title */}
-          <Text style={styles.sectionTitle}>Requirements and Specifications</Text>
+          <Text style={styles.sectionTitle}>
+            Requirements and Specifications
+          </Text>
 
           {/* Care Tips and Features */}
           <View style={styles.featuresContainer}>
@@ -309,8 +395,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   headerIcon: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
   },
   scrollContainer: {
     flex: 1,
@@ -341,9 +427,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 5,
+  },
+  favoriteBadge: {
+    position: 'absolute',
+    top: 0,
+    right: 20, // Adjust based on your image width
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 25,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   content: {
     paddingHorizontal: 20,

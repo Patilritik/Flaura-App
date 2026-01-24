@@ -11,6 +11,7 @@ import {
   Alert,
   SafeAreaView,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import axios from 'axios';
 import API_BASE_URL from '../apiConfig';
@@ -245,7 +246,14 @@ const HomeScreen = () => {
     { type: 'spacer', id: 'spacer-1' },
   ].filter(item => !loading || (item.type !== 'product' && item.type !== 'spacer'));
 
-
+   if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color={colors.primaryGreen} />
+        <Text style={styles.loaderText}>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -379,6 +387,18 @@ const styles = StyleSheet.create({
   },
   bottomSpacer: {
     height: 50,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+  loaderText: {
+    marginTop: 10,
+    fontSize: 16,
+    fontFamily: 'Poppins-Medium',
+    color: colors.primaryGreen,
   },
 
 });

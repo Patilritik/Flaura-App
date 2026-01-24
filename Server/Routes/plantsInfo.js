@@ -1,6 +1,7 @@
 const express = require('express');
 const Plant = require('../models/PlantModal');
 const router = express.Router();
+const User = require('../models/UserModal');
 
 // GET ALL PLANTS INFO
 router.get('/plants_info', async (req, res) => {
@@ -146,6 +147,53 @@ router.post('/plants_info', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+// Check Favorite Plants for a User
+router.get('/check_favourites/:userId/:productId', async (req, res) => {
+    try {
+        const { userId, productId } = req.params;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        const isFavorite = user.favorites.includes(productId);
+        res.status(200).json({ isFavorite });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+//toggle Favorite Plant for a User
+router.post('/toggle_favorite', async (req, res) => {
+    try {
+        const { userId, product_id } = req.body;
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const index = user.favorites.indexOf(product_id);
+
+        if (index === -1) {
+            // Not in favorites, so ADD it
+            user.favorites.push(product_id);
+            await user.save();
+            return res.status(200).json({ message: 'Added to favorites', isFavorite: true });
+        } else {
+            // Already in favorites, so REMOVE it
+            user.favorites.splice(index, 1);
+            await user.save();
+            return res.status(200).json({ message: 'Removed from favorites', isFavorite: false });
+        }
+    } catch (error) {
+        console.error('Error toggling favorite:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 
 
 module.exports = router;
