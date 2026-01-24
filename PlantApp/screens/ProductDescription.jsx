@@ -23,6 +23,7 @@ const ProductDescription = ({ route, navigation }) => {
     setLoading(true);
     try {
       const response = await axios.get(`${API_BASE_URL}api/plants_info/${id}`);
+      console.log('Plant info response:', response.data);
       setProductInfo(response.data);
     } catch (error) {
       console.error('Error fetching plant info:', error);
@@ -73,8 +74,8 @@ const ProductDescription = ({ route, navigation }) => {
       ToastManager.show({
         type: 'success',
         message: cartCount === 0 
-          ? `Item removed from cart: ${productInfo.product_name}`
-          : `Item updated in cart: ${productInfo.product_name} (${cartCount})`,
+          ? `Item removed from cart: ${productInfo.commonName}`
+          : `Item updated in cart: ${productInfo.commonName} (${cartCount})`,
         duration: 3000,
       });
     } catch (error) {
@@ -170,7 +171,7 @@ const ProductDescription = ({ route, navigation }) => {
         <View style={styles.content}>
           {/* Product Name with Cart Control */}
           <View style={styles.nameContainer}>
-            <Text style={styles.title}>{productInfo.product_name || 'Unnamed Product'}</Text>
+            <Text style={styles.title}>{productInfo.commonName || 'Unnamed Product'}</Text>
             <View style={styles.cartControl}>
               <TouchableOpacity style={styles.cartButton} onPress={handleDecrease}>
                 <Text style={styles.cartButtonText}>−</Text>

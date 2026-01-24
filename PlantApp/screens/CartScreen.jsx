@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    marginTop: 80,
+    marginTop: 20,
     marginBottom: 80,
   },
   scrollContent: {
