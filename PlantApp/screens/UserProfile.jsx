@@ -65,7 +65,7 @@ const UserProfile = () => {
         message: 'Logged out successfully.',
         duration: 3000,
       });
-      navigation.replace('LoginScreen'); // Replace with your login screen route
+      navigation.replace('Login'); // Replace with your login screen route
     } catch (error) {
       console.error('Error during logout:', error);
       ToastManager.show({

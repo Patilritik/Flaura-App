@@ -8,6 +8,8 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import colors from '../utils/colors';
 
 const SplashScreen = () => {
@@ -15,7 +17,12 @@ const SplashScreen = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
+      const token = AsyncStorage.getItem('userToken');
+      if (token) {
+        navigation.replace('Home'); // ya HomeScreen
+      } else {  
       navigation.replace('Login'); // ya LoginScreen
+      }
     }, 5000);
 
     return () => clearTimeout(timer);
