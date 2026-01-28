@@ -139,10 +139,12 @@ const LoginScreen = ({ navigation }) => {
   const handleSignIn = async () => {
     setLoading(true);
     try {
+      console.log("jvasgdjvashvasgjsh")
       const response = await axios.post(`${API_BASE_URL}api/login`, {
         email,
         password,
       });
+      console.log('Login response:', response.data);
       ToastManager.show({
         message: 'Login successfull!',
         type: 'success',

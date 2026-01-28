@@ -1,645 +1,712 @@
 [
-  {
-    "id": 1,
-    "commonName": "Snake Plant",
-    "scientificName": "Sansevieria trifasciata",
-    "category": "Indoor",
-    "description": "A hardy, upright plant with long, sword-like green leaves with variegated patterns. Native to West Africa but popular in India for its resilience and air-purifying qualities.",
-    "careTips": {
-      "light": "Low to bright indirect light; tolerates low light.",
-      "water": "Water every 2-4 weeks; allow soil to dry out completely.",
-      "soil": "Well-draining potting mix with perlite or sand.",
-      "temperature": "60-85°F (15-29°C); avoid drafts."
+    {
+        "_id": "69749b9ddb21fe5b9edbe793",
+        "id": 1,
+        "commonName": "Snake Plant",
+        "scientificName": "Sansevieria trifasciata",
+        "category": "Indoor",
+        "description": "A hardy, upright plant with long, sword-like green leaves with variegated patterns. Native to West Africa but popular in India for its resilience and air-purifying qualities.",
+        "careTips": {
+            "light": "Low to bright indirect light; tolerates low light.",
+            "water": "Water every 2-4 weeks; allow soil to dry out completely.",
+            "soil": "Well-draining potting mix with perlite or sand.",
+            "temperature": "60-85°F (15-29°C); avoid drafts.",
+            "_id": "69791c0ae635de052005c90b"
+        },
+        "price": 300,
+        "image": "assets/snake_plant.jpg",
+        "toxicity": "Toxic to cats and dogs if ingested.",
+        "maintenance": "Low",
+        "airPurifying": true,
+        "image_url": "https://img.freepik.com/free-psd/snake-plant-sanse…-isolated-transparent-background_191095-12234.jpg"
     },
-    "price": 300,
-    "image": "assets/snake_plant.jpg",
-    "toxicity": "Toxic to cats and dogs if ingested.",
-    "maintenance": "Low",
-    "airPurifying": true,
-    "image_url": "https://img.freepik.com/free-psd/snake-plant-sanse…-isolated-transparent-background_191095-12234.jpg"
-  },
-  {
-    "id": 2,
-    "commonName": "Pothos",
-    "scientificName": "Epipremnum aureum",
-    "category": "Indoor",
-    "description": "A trailing vine with heart-shaped green leaves, often with yellow or white variegation. Widely grown in Indian homes for its ease of care.",
-    "careTips": {
-      "light": "Low to bright indirect light; avoids direct sun.",
-      "water": "Water every 1-2 weeks; let top inch of soil dry out.",
-      "soil": "Well-draining potting mix.",
-      "temperature": "65-80°F (18-27°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe794",
+        "id": 2,
+        "commonName": "Pothos",
+        "scientificName": "Epipremnum aureum",
+        "category": "Indoor",
+        "description": "A trailing vine with heart-shaped green leaves, often with yellow or white variegation. Widely grown in Indian homes for its ease of care.",
+        "careTips": {
+            "light": "Low to bright indirect light; avoids direct sun.",
+            "water": "Water every 1-2 weeks; let top inch of soil dry out.",
+            "soil": "Well-draining potting mix.",
+            "temperature": "65-80°F (18-27°C).",
+            "_id": "69791c0ae635de052005c90c"
+        },
+        "price": 250,
+        "image": "assets/images/pothos.jpg",
+        "toxicity": "Toxic to pets and humans if ingested.",
+        "maintenance": "Low",
+        "airPurifying": true,
+        "image_url": "https://img.freepik.com/free-psd/pothos-epipremnum…-isolated-transparent-background_191095-12098.jpg"
     },
-    "price": 250,
-    "image": "assets/images/pothos.jpg",
-    "toxicity": "Toxic to pets and humans if ingested.",
-    "maintenance": "Low",
-    "airPurifying": true,
-    "image_url": "https://img.freepik.com/free-psd/pothos-epipremnum…-isolated-transparent-background_191095-12098.jpg"
-  },
-  {
-    "id": 3,
-    "commonName": "Peace Lily",
-    "scientificName": "Spathiphyllum wallisii",
-    "category": "Indoor",
-    "description": "An elegant plant with glossy green leaves and white, hood-like flowers. Popular in India for its air-purifying qualities and shade tolerance.",
-    "careTips": {
-      "light": "Low to medium indirect light; no direct sun.",
-      "water": "Water weekly; keep soil moist but not soggy.",
-      "soil": "Rich, well-draining potting mix.",
-      "temperature": "65-80°F (18-27°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe795",
+        "id": 3,
+        "commonName": "Peace Lily",
+        "scientificName": "Spathiphyllum wallisii",
+        "category": "Indoor",
+        "description": "An elegant plant with glossy green leaves and white, hood-like flowers. Popular in India for its air-purifying qualities and shade tolerance.",
+        "careTips": {
+            "light": "Low to medium indirect light; no direct sun.",
+            "water": "Water weekly; keep soil moist but not soggy.",
+            "soil": "Rich, well-draining potting mix.",
+            "temperature": "65-80°F (18-27°C).",
+            "_id": "69791c0ae635de052005c90d"
+        },
+        "price": 400,
+        "image": "assets/images/peace_lily.jpg",
+        "toxicity": "Toxic to pets and humans if ingested.",
+        "maintenance": "Moderate",
+        "airPurifying": true,
+        "image_url": "https://img.freepik.com/free-photo/peace-lily-plant-pot_53876-133141.jpg"
     },
-    "price": 400,
-    "image": "assets/images/peace_lily.jpg",
-    "toxicity": "Toxic to pets and humans if ingested.",
-    "maintenance": "Moderate",
-    "airPurifying": true,
-    "image_url": "https://img.freepik.com/free-photo/peace-lily-plant-pot_53876-133141.jpg"
-  },
-  {
-    "id": 4,
-    "commonName": "ZZ Plant",
-    "scientificName": "Zamioculcas zamiifolia",
-    "category": "Indoor",
-    "description": "A glossy, dark green plant with smooth, upright stems. A favorite in Indian offices and homes for its drought tolerance.",
-    "careTips": {
-      "light": "Low to bright indirect light; tolerates fluorescent light.",
-      "water": "Water every 2-3 weeks; allow soil to dry out.",
-      "soil": "Well-draining potting mix.",
-      "temperature": "60-75°F (15-24°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe796",
+        "id": 4,
+        "commonName": "ZZ Plant",
+        "scientificName": "Zamioculcas zamiifolia",
+        "category": "Indoor",
+        "description": "A glossy, dark green plant with smooth, upright stems. A favorite in Indian offices and homes for its drought tolerance.",
+        "careTips": {
+            "light": "Low to bright indirect light; tolerates fluorescent light.",
+            "water": "Water every 2-3 weeks; allow soil to dry out.",
+            "soil": "Well-draining potting mix.",
+            "temperature": "60-75°F (15-24°C).",
+            "_id": "69791c0ae635de052005c90e"
+        },
+        "price": 350,
+        "image": "assets/images/zz_plant.jpg",
+        "toxicity": "Toxic to pets and humans if ingested.",
+        "maintenance": "Low",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/free-photo/interior-design-with-green-plant-high-angle_23-2149551401.jpg"
     },
-    "price": 350,
-    "image": "assets/images/zz_plant.jpg",
-    "toxicity": "Toxic to pets and humans if ingested.",
-    "maintenance": "Low",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/free-photo/interior-design-with-green-plant-high-angle_23-2149551401.jpg"
-  },
-  {
-    "id": 5,
-    "commonName": "Spider Plant",
-    "scientificName": "Chlorophytum comosum",
-    "category": "Indoor",
-    "description": "A rosette of arching green leaves with white stripes, often producing baby plantlets. Common in Indian households for its vibrant look.",
-    "careTips": {
-      "light": "Bright indirect light; tolerates low light.",
-      "water": "Water weekly; keep soil slightly moist.",
-      "soil": "Well-draining potting mix.",
-      "temperature": "60-75°F (15-24°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe797",
+        "id": 5,
+        "commonName": "Spider Plant",
+        "scientificName": "Chlorophytum comosum",
+        "category": "Indoor",
+        "description": "A rosette of arching green leaves with white stripes, often producing baby plantlets. Common in Indian households for its vibrant look.",
+        "careTips": {
+            "light": "Bright indirect light; tolerates low light.",
+            "water": "Water weekly; keep soil slightly moist.",
+            "soil": "Well-draining potting mix.",
+            "temperature": "60-75°F (15-24°C).",
+            "_id": "69791c0ae635de052005c90f"
+        },
+        "price": 280,
+        "image": "assets/images/spider_plant.jpg",
+        "toxicity": "Non-toxic to pets and humans.",
+        "maintenance": "Low",
+        "airPurifying": true,
+        "image_url": "https://img.freepik.com/premium-photo/chlorophytum…own-spider-plant-pot-wooden-fence_128711-1846.jpg"
     },
-    "price": 280,
-    "image": "assets/images/spider_plant.jpg",
-    "toxicity": "Non-toxic to pets and humans.",
-    "maintenance": "Low",
-    "airPurifying": true,
-    "image_url": "https://img.freepik.com/premium-photo/chlorophytum…own-spider-plant-pot-wooden-fence_128711-1846.jpg"
-  },
-  {
-    "id": 6,
-    "commonName": "Lavender",
-    "scientificName": "Lavandula angustifolia",
-    "category": "Outdoor",
-    "description": "A fragrant herb with silvery-green foliage and purple flower spikes. Grown in Indian gardens for its aroma and pollinator attraction.",
-    "careTips": {
-      "light": "Full sun (6+ hours daily).",
-      "water": "Water every 1-2 weeks; drought-tolerant once established.",
-      "soil": "Well-draining, sandy or gravelly soil.",
-      "temperature": "50-85°F (10-29°C); hardy in USDA zones 5-9."
+    {
+        "_id": "69749b9ddb21fe5b9edbe798",
+        "id": 6,
+        "commonName": "Lavender",
+        "scientificName": "Lavandula angustifolia",
+        "category": "Outdoor",
+        "description": "A fragrant herb with silvery-green foliage and purple flower spikes. Grown in Indian gardens for its aroma and pollinator attraction.",
+        "careTips": {
+            "light": "Full sun (6+ hours daily).",
+            "water": "Water every 1-2 weeks; drought-tolerant once established.",
+            "soil": "Well-draining, sandy or gravelly soil.",
+            "temperature": "50-85°F (10-29°C); hardy in USDA zones 5-9.",
+            "_id": "69791c0ae635de052005c910"
+        },
+        "price": 200,
+        "image": "assets/images/lavender.jpg",
+        "toxicity": "Toxic to pets if ingested in large amounts.",
+        "maintenance": "Low",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/free-photo/beautiful-flower-vase-studio_23-2150788583.jpg"
     },
-    "price": 200,
-    "image": "assets/images/lavender.jpg",
-    "toxicity": "Toxic to pets if ingested in large amounts.",
-    "maintenance": "Low",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/free-photo/beautiful-flower-vase-studio_23-2150788583.jpg"
-  },
-  {
-    "id": 7,
-    "commonName": "Rose",
-    "scientificName": "Rosa spp.",
-    "category": "Outdoor",
-    "description": "A classic flowering shrub with vibrant blooms in various colors. Widely cultivated in India for gardens and festivals.",
-    "careTips": {
-      "light": "Full sun (6+ hours daily).",
-      "water": "Water deeply weekly; avoid overhead watering.",
-      "soil": "Well-draining, fertile loam.",
-      "temperature": "50-80°F (10-27°C); hardy in USDA zones 4-9."
+    {
+        "_id": "69749b9ddb21fe5b9edbe799",
+        "id": 7,
+        "commonName": "Rose",
+        "scientificName": "Rosa spp.",
+        "category": "Outdoor",
+        "description": "A classic flowering shrub with vibrant blooms in various colors. Widely cultivated in India for gardens and festivals.",
+        "careTips": {
+            "light": "Full sun (6+ hours daily).",
+            "water": "Water deeply weekly; avoid overhead watering.",
+            "soil": "Well-draining, fertile loam.",
+            "temperature": "50-80°F (10-27°C); hardy in USDA zones 4-9.",
+            "_id": "69791c0ae635de052005c911"
+        },
+        "price": 450,
+        "image": "assets/images/rose.jpg",
+        "toxicity": "Non-toxic to pets and humans.",
+        "maintenance": "Moderate",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/premium-psd/flowers-pots-isolated-transparent-background_720969-547.jpg"
     },
-    "price": 450,
-    "image": "assets/images/rose.jpg",
-    "toxicity": "Non-toxic to pets and humans.",
-    "maintenance": "Moderate",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/premium-psd/flowers-pots-isolated-transparent-background_720969-547.jpg"
-  },
-  {
-    "id": 8,
-    "commonName": "Boxwood",
-    "scientificName": "Buxus sempervirens",
-    "category": "Outdoor",
-    "description": "A dense, evergreen shrub with small, glossy green leaves. Used in Indian landscapes for hedges and topiary.",
-    "careTips": {
-      "light": "Full sun to partial shade.",
-      "water": "Water weekly; keep soil moist but not waterlogged.",
-      "soil": "Well-draining, loamy soil.",
-      "temperature": "40-80°F (4-27°C); hardy in USDA zones 5-8."
+    {
+        "_id": "69749b9ddb21fe5b9edbe79a",
+        "id": 8,
+        "commonName": "Boxwood",
+        "scientificName": "Buxus sempervirens",
+        "category": "Outdoor",
+        "description": "A dense, evergreen shrub with small, glossy green leaves. Used in Indian landscapes for hedges and topiary.",
+        "careTips": {
+            "light": "Full sun to partial shade.",
+            "water": "Water weekly; keep soil moist but not waterlogged.",
+            "soil": "Well-draining, loamy soil.",
+            "temperature": "40-80°F (4-27°C); hardy in USDA zones 5-8.",
+            "_id": "69791c0ae635de052005c912"
+        },
+        "price": 500,
+        "image": "assets/images/boxwood.jpg",
+        "toxicity": "Toxic to pets and humans if ingested.",
+        "maintenance": "Moderate",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/premium-photo/high-angle-view-flowering-plant-field_1048944-371483.jpg"
     },
-    "price": 500,
-    "image": "assets/images/boxwood.jpg",
-    "toxicity": "Toxic to pets and humans if ingested.",
-    "maintenance": "Moderate",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/premium-photo/high-angle-view-flowering-plant-field_1048944-371483.jpg"
-  },
-  {
-    "id": 9,
-    "commonName": "Aloe Vera",
-    "scientificName": "Aloe barbadensis miller",
-    "category": "Both",
-    "description": "A succulent with thick, fleshy green leaves containing soothing gel. Common in Indian homes for medicinal use.",
-    "careTips": {
-      "light": "Bright direct light indoors; full sun outdoors.",
-      "water": "Water every 2-3 weeks; allow soil to dry out.",
-      "soil": "Well-draining cactus or succulent mix.",
-      "temperature": "55-85°F (13-29°C); protect from frost."
+    {
+        "_id": "69749b9ddb21fe5b9edbe79b",
+        "id": 9,
+        "commonName": "Aloe Vera",
+        "scientificName": "Aloe barbadensis miller",
+        "category": "Both",
+        "description": "A succulent with thick, fleshy green leaves containing soothing gel. Common in Indian homes for medicinal use.",
+        "careTips": {
+            "light": "Bright direct light indoors; full sun outdoors.",
+            "water": "Water every 2-3 weeks; allow soil to dry out.",
+            "soil": "Well-draining cactus or succulent mix.",
+            "temperature": "55-85°F (13-29°C); protect from frost.",
+            "_id": "69791c0ae635de052005c913"
+        },
+        "price": 220,
+        "image": "assets/images/aloe_vera.jpg",
+        "toxicity": "Toxic to pets if ingested.",
+        "maintenance": "Low",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/free-psd/aloe-vera-plant-white-pot-3d-render-succulent_191095-83438.jpg"
     },
-    "price": 220,
-    "image": "assets/images/aloe_vera.jpg",
-    "toxicity": "Toxic to pets if ingested.",
-    "maintenance": "Low",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/free-psd/aloe-vera-plant-white-pot-3d-render-succulent_191095-83438.jpg"
-  },
-  {
-    "id": 10,
-    "commonName": "Basil",
-    "scientificName": "Ocimum basilicum",
-    "category": "Both",
-    "description": "An aromatic herb with lush green leaves, known as Tulsi in India. Sacred and culinary, grown in homes and gardens.",
-    "careTips": {
-      "light": "Bright direct light indoors; full sun outdoors.",
-      "water": "Water when top inch of soil is dry; avoid overwatering.",
-      "soil": "Well-draining, fertile soil.",
-      "temperature": "60-80°F (15-27°C); protect from cold."
+    {
+        "_id": "69749b9ddb21fe5b9edbe79c",
+        "id": 10,
+        "commonName": "Basil",
+        "scientificName": "Ocimum basilicum",
+        "category": "Both",
+        "description": "An aromatic herb with lush green leaves, known as Tulsi in India. Sacred and culinary, grown in homes and gardens.",
+        "careTips": {
+            "light": "Bright direct light indoors; full sun outdoors.",
+            "water": "Water when top inch of soil is dry; avoid overwatering.",
+            "soil": "Well-draining, fertile soil.",
+            "temperature": "60-80°F (15-27°C); protect from cold.",
+            "_id": "69791c0ae635de052005c914"
+        },
+        "price": 150,
+        "image": "assets/images/basil.jpg",
+        "toxicity": "Non-toxic to pets and humans.",
+        "maintenance": "Moderate",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/free-photo/vertical-high-a%E2%80%A6l-plant-white-vase-white-surface_181624-21672.jpg"
     },
-    "price": 150,
-    "image": "assets/images/basil.jpg",
-    "toxicity": "Non-toxic to pets and humans.",
-    "maintenance": "Moderate",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/free-photo/vertical-high-a%E2%80%A6l-plant-white-vase-white-surface_181624-21672.jpg"
-  },
-  {
-    "id": 11,
-    "commonName": "Tulsi",
-    "scientificName": "Ocimum tenuiflorum",
-    "category": "Both",
-    "description": "A sacred Indian herb with small, aromatic green leaves. Revered in Ayurveda and grown in households for spiritual and medicinal benefits.",
-    "careTips": {
-      "light": "Full sun to partial shade.",
-      "water": "Water daily in summer; keep soil moist.",
-      "soil": "Well-draining, loamy soil.",
-      "temperature": "65-90°F (18-32°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe79d",
+        "id": 11,
+        "commonName": "Tulsi",
+        "scientificName": "Ocimum tenuiflorum",
+        "category": "Both",
+        "description": "A sacred Indian herb with small, aromatic green leaves. Revered in Ayurveda and grown in households for spiritual and medicinal benefits.",
+        "careTips": {
+            "light": "Full sun to partial shade.",
+            "water": "Water daily in summer; keep soil moist.",
+            "soil": "Well-draining, loamy soil.",
+            "temperature": "65-90°F (18-32°C).",
+            "_id": "69791c0ae635de052005c915"
+        },
+        "price": 180,
+        "image": "assets/images/tulsi.jpg",
+        "toxicity": "Non-toxic to pets and humans.",
+        "maintenance": "Low",
+        "airPurifying": true,
+        "image_url": "https://img.freepik.com/premium-photo/indian-traditional-pot-special-masonry-structure-known-as-tulsi-vrindavan-vrundavan-with-swastik-aum-writting-holy-hindu-object-isolated-selective-focus_466689-62238.jpg"
     },
-    "price": 180,
-    "image": "assets/images/tulsi.jpg",
-    "toxicity": "Non-toxic to pets and humans.",
-    "maintenance": "Low",
-    "airPurifying": true,
-    "image_url": "https://img.freepik.com/premium-photo/indian-traditional-pot-special-masonry-structure-known-as-tulsi-vrindavan-vrundavan-with-swastik-aum-writting-holy-hindu-object-isolated-selective-focus_466689-62238.jpg"
-  },
-  {
-    "id": 12,
-    "commonName": "Hibiscus",
-    "scientificName": "Hibiscus rosa-sinensis",
-    "category": "Outdoor",
-    "description": "A vibrant shrub with large, colorful flowers (red, pink, yellow). Common in Indian gardens and used in worship.",
-    "careTips": {
-      "light": "Full sun (6+ hours daily).",
-      "water": "Water regularly; keep soil moist.",
-      "soil": "Well-draining, fertile soil.",
-      "temperature": "60-90°F (15-32°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe79e",
+        "id": 12,
+        "commonName": "Hibiscus",
+        "scientificName": "Hibiscus rosa-sinensis",
+        "category": "Outdoor",
+        "description": "A vibrant shrub with large, colorful flowers (red, pink, yellow). Common in Indian gardens and used in worship.",
+        "careTips": {
+            "light": "Full sun (6+ hours daily).",
+            "water": "Water regularly; keep soil moist.",
+            "soil": "Well-draining, fertile soil.",
+            "temperature": "60-90°F (15-32°C).",
+            "_id": "69791c0ae635de052005c916"
+        },
+        "price": 350,
+        "image": "assets/images/hibiscus.jpg",
+        "toxicity": "Non-toxic to pets and humans.",
+        "maintenance": "Moderate",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/premium-photo/mandevilla-sanderi-plant-flower-pot-against-white-background_1048944-14299751.jpg"
     },
-    "price": 350,
-    "image": "assets/images/hibiscus.jpg",
-    "toxicity": "Non-toxic to pets and humans.",
-    "maintenance": "Moderate",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/premium-photo/mandevilla-sanderi-plant-flower-pot-against-white-background_1048944-14299751.jpg"
-  },
-  {
-    "id": 13,
-    "commonName": "Neem",
-    "scientificName": "Azadirachta indica",
-    "category": "Outdoor",
-    "description": "A fast-growing tree with serrated green leaves, known for its medicinal properties in India. Used in Ayurveda and pest control.",
-    "careTips": {
-      "light": "Full sun.",
-      "water": "Water weekly; drought-tolerant once established.",
-      "soil": "Well-draining, sandy soil.",
-      "temperature": "60-100°F (15-38°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe79f",
+        "id": 13,
+        "commonName": "Neem",
+        "scientificName": "Azadirachta indica",
+        "category": "Outdoor",
+        "description": "A fast-growing tree with serrated green leaves, known for its medicinal properties in India. Used in Ayurveda and pest control.",
+        "careTips": {
+            "light": "Full sun.",
+            "water": "Water weekly; drought-tolerant once established.",
+            "soil": "Well-draining, sandy soil.",
+            "temperature": "60-100°F (15-38°C).",
+            "_id": "69791c0ae635de052005c917"
+        },
+        "price": 600,
+        "image": "assets/images/neem.jpg",
+        "toxicity": "Toxic to pets if ingested in large amounts.",
+        "maintenance": "Low",
+        "airPurifying": true,
+        "image_url": "https://img.freepik.com/free-photo/vase-cactus-decoration-with-empty-room_1339-6436.jpg"
     },
-    "price": 600,
-    "image": "assets/images/neem.jpg",
-    "toxicity": "Toxic to pets if ingested in large amounts.",
-    "maintenance": "Low",
-    "airPurifying": true,
-    "image_url": "https://img.freepik.com/free-photo/vase-cactus-decoration-with-empty-room_1339-6436.jpg"
-  },
-  {
-    "id": 14,
-    "commonName": "Money Plant",
-    "scientificName": "Epipremnum aureum",
-    "category": "Indoor",
-    "description": "A climbing vine with heart-shaped green leaves, believed to bring prosperity in Indian homes.",
-    "careTips": {
-      "light": "Low to bright indirect light.",
-      "water": "Water every 1-2 weeks; let soil dry out.",
-      "soil": "Well-draining potting mix.",
-      "temperature": "65-85°F (18-29°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7a0",
+        "id": 14,
+        "commonName": "Money Plant",
+        "scientificName": "Epipremnum aureum",
+        "category": "Indoor",
+        "description": "A climbing vine with heart-shaped green leaves, believed to bring prosperity in Indian homes.",
+        "careTips": {
+            "light": "Low to bright indirect light.",
+            "water": "Water every 1-2 weeks; let soil dry out.",
+            "soil": "Well-draining potting mix.",
+            "temperature": "65-85°F (18-29°C).",
+            "_id": "69791c0ae635de052005c918"
+        },
+        "price": 200,
+        "image": "assets/images/money_plant.jpg",
+        "toxicity": "Toxic to pets and humans if ingested.",
+        "maintenance": "Low",
+        "airPurifying": true,
+        "image_url": "https://img.freepik.com/premium-photo/close-up-pot…ble-against-white-background_1048944-30839100.jpg"
     },
-    "price": 200,
-    "image": "assets/images/money_plant.jpg",
-    "toxicity": "Toxic to pets and humans if ingested.",
-    "maintenance": "Low",
-    "airPurifying": true,
-    "image_url": "https://img.freepik.com/premium-photo/close-up-pot…ble-against-white-background_1048944-30839100.jpg"
-  },
-  {
-    "id": 15,
-    "commonName": "Jasmine",
-    "scientificName": "Jasminum sambac",
-    "category": "Outdoor",
-    "description": "A fragrant shrub with white, star-shaped flowers. Known as Mogra in India, used in perfumes and garlands.",
-    "careTips": {
-      "light": "Full sun to partial shade.",
-      "water": "Water regularly; keep soil moist.",
-      "soil": "Well-draining, loamy soil.",
-      "temperature": "60-85°F (15-29°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7a1",
+        "id": 15,
+        "commonName": "Jasmine",
+        "scientificName": "Jasminum sambac",
+        "category": "Outdoor",
+        "description": "A fragrant shrub with white, star-shaped flowers. Known as Mogra in India, used in perfumes and garlands.",
+        "careTips": {
+            "light": "Full sun to partial shade.",
+            "water": "Water regularly; keep soil moist.",
+            "soil": "Well-draining, loamy soil.",
+            "temperature": "60-85°F (15-29°C).",
+            "_id": "69791c0ae635de052005c919"
+        },
+        "price": 300,
+        "image": "assets/images/jasmine.jpg",
+        "toxicity": "Non-toxic to pets and humans.",
+        "maintenance": "Moderate",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/premium-photo/beautiful-jasmine-flowers-vase-isolated-white_392895-144969.jpg"
     },
-    "price": 300,
-    "image": "assets/images/jasmine.jpg",
-    "toxicity": "Non-toxic to pets and humans.",
-    "maintenance": "Moderate",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/premium-photo/beautiful-jasmine-flowers-vase-isolated-white_392895-144969.jpg"
-  },
-  {
-    "id": 16,
-    "commonName": "Curry Leaf",
-    "scientificName": "Murraya koenigii",
-    "category": "Both",
-    "description": "A small tree with aromatic leaves used in Indian cooking. Grown in pots or gardens.",
-    "careTips": {
-      "light": "Full sun to partial shade.",
-      "water": "Water regularly; keep soil moist.",
-      "soil": "Well-draining, fertile soil.",
-      "temperature": "60-90°F (15-32°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7a2",
+        "id": 16,
+        "commonName": "Curry Leaf",
+        "scientificName": "Murraya koenigii",
+        "category": "Both",
+        "description": "A small tree with aromatic leaves used in Indian cooking. Grown in pots or gardens.",
+        "careTips": {
+            "light": "Full sun to partial shade.",
+            "water": "Water regularly; keep soil moist.",
+            "soil": "Well-draining, fertile soil.",
+            "temperature": "60-90°F (15-32°C).",
+            "_id": "69791c0ae635de052005c91a"
+        },
+        "price": 250,
+        "image": "assets/images/curry_leaf.jpg",
+        "toxicity": "Non-toxic to pets and humans.",
+        "maintenance": "Moderate",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/premium-photo/curry-leaf-tree-plant-with-yellow-pot-that-says-word-fern-it_893055-163.jpg"
     },
-    "price": 250,
-    "image": "assets/images/curry_leaf.jpg",
-    "toxicity": "Non-toxic to pets and humans.",
-    "maintenance": "Moderate",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/premium-photo/curry-leaf-tree-plant-with-yellow-pot-that-says-word-fern-it_893055-163.jpg"
-  },
-  {
-    "id": 17,
-    "commonName": "Bougainvillea",
-    "scientificName": "Bougainvillea spectabilis",
-    "category": "Outdoor",
-    "description": "A colorful climbing shrub with vibrant bracts (pink, purple, red). Common in Indian landscapes.",
-    "careTips": {
-      "light": "Full sun (6+ hours daily).",
-      "water": "Water weekly; drought-tolerant once established.",
-      "soil": "Well-draining, sandy soil.",
-      "temperature": "60-100°F (15-38°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7a3",
+        "id": 17,
+        "commonName": "Bougainvillea",
+        "scientificName": "Bougainvillea spectabilis",
+        "category": "Outdoor",
+        "description": "A colorful climbing shrub with vibrant bracts (pink, purple, red). Common in Indian landscapes.",
+        "careTips": {
+            "light": "Full sun (6+ hours daily).",
+            "water": "Water weekly; drought-tolerant once established.",
+            "soil": "Well-draining, sandy soil.",
+            "temperature": "60-100°F (15-38°C).",
+            "_id": "69791c0ae635de052005c91b"
+        },
+        "price": 400,
+        "image": "assets/images/bougainvillea.jpg",
+        "toxicity": "Mildly toxic to pets if ingested.",
+        "maintenance": "Low",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/free-psd/vibrant-hanging-greenery-transparent-background_84443-30488.jpg"
     },
-    "price": 400,
-    "image": "assets/images/bougainvillea.jpg",
-    "toxicity": "Mildly toxic to pets if ingested.",
-    "maintenance": "Low",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/free-psd/vibrant-hanging-greenery-transparent-background_84443-30488.jpg"
-  },
-  {
-    "id": 18,
-    "commonName": "Ashwagandha",
-    "scientificName": "Withania somnifera",
-    "category": "Outdoor",
-    "description": "A medicinal herb with small green leaves and orange-red berries. Used in Ayurvedic medicine in India.",
-    "careTips": {
-      "light": "Full sun.",
-      "water": "Water weekly; drought-tolerant.",
-      "soil": "Well-draining, sandy soil.",
-      "temperature": "60-95°F (15-35°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7a4",
+        "id": 18,
+        "commonName": "Ashwagandha",
+        "scientificName": "Withania somnifera",
+        "category": "Outdoor",
+        "description": "A medicinal herb with small green leaves and orange-red berries. Used in Ayurvedic medicine in India.",
+        "careTips": {
+            "light": "Full sun.",
+            "water": "Water weekly; drought-tolerant.",
+            "soil": "Well-draining, sandy soil.",
+            "temperature": "60-95°F (15-35°C).",
+            "_id": "69791c0ae635de052005c91c"
+        },
+        "price": 220,
+        "image": "assets/images/ashwagandha.jpg",
+        "toxicity": "Toxic to pets and humans if ingested raw.",
+        "maintenance": "Low",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/free-photo/gardening-concept-with-plants_23-2148000300.jpg"
     },
-    "price": 220,
-    "image": "assets/images/ashwagandha.jpg",
-    "toxicity": "Toxic to pets and humans if ingested raw.",
-    "maintenance": "Low",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/free-photo/gardening-concept-with-plants_23-2148000300.jpg"
-  },
-  {
-    "id": 19,
-    "commonName": "Mango Tree",
-    "scientificName": "Mangifera indica",
-    "category": "Outdoor",
-    "description": "A large fruit tree with glossy green leaves and sweet mangoes. Iconic in Indian orchards.",
-    "careTips": {
-      "light": "Full sun.",
-      "water": "Water weekly; reduce in winter.",
-      "soil": "Well-draining, loamy soil.",
-      "temperature": "70-100°F (21-38°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7a5",
+        "id": 19,
+        "commonName": "Mango Tree",
+        "scientificName": "Mangifera indica",
+        "category": "Outdoor",
+        "description": "A large fruit tree with glossy green leaves and sweet mangoes. Iconic in Indian orchards.",
+        "careTips": {
+            "light": "Full sun.",
+            "water": "Water weekly; reduce in winter.",
+            "soil": "Well-draining, loamy soil.",
+            "temperature": "70-100°F (21-38°C).",
+            "_id": "69791c0ae635de052005c91d"
+        },
+        "price": 800,
+        "image": "assets/images/mango_tree.jpg",
+        "toxicity": "Non-toxic to pets and humans.",
+        "maintenance": "Moderate",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/free-photo/still-life-with-indoor-plants_23-2151024963.jpg"
     },
-    "price": 800,
-    "image": "assets/images/mango_tree.jpg",
-    "toxicity": "Non-toxic to pets and humans.",
-    "maintenance": "Moderate",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/free-photo/still-life-with-indoor-plants_23-2151024963.jpg"
-  },
-  {
-    "id": 20,
-    "commonName": "Areca Palm",
-    "scientificName": "Dypsis lutescens",
-    "category": "Indoor",
-    "description": "A feathery palm with arching fronds, popular in Indian homes for its tropical vibe.",
-    "careTips": {
-      "light": "Bright indirect light.",
-      "water": "Water weekly; keep soil moist.",
-      "soil": "Well-draining potting mix.",
-      "temperature": "65-85°F (18-29°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7a6",
+        "id": 20,
+        "commonName": "Areca Palm",
+        "scientificName": "Dypsis lutescens",
+        "category": "Indoor",
+        "description": "A feathery palm with arching fronds, popular in Indian homes for its tropical vibe.",
+        "careTips": {
+            "light": "Bright indirect light.",
+            "water": "Water weekly; keep soil moist.",
+            "soil": "Well-draining potting mix.",
+            "temperature": "65-85°F (18-29°C).",
+            "_id": "69791c0ae635de052005c91e"
+        },
+        "price": 600,
+        "image": "assets/images/areca_palm.jpg",
+        "toxicity": "Non-toxic to pets and humans.",
+        "maintenance": "Moderate",
+        "airPurifying": true,
+        "image_url": "https://img.freepik.com/free-psd/elegant-indoor-palm-tree-modern-pot_632498-25513.jpg?uid=R197613108&ga=GA1.1.1380539113.1739698930&semt=ais_hybrid&w=740"
     },
-    "price": 600,
-    "image": "assets/images/areca_palm.jpg",
-    "toxicity": "Non-toxic to pets and humans.",
-    "maintenance": "Moderate",
-    "airPurifying": true,
-    "image_url": "https://img.freepik.com/free-psd/elegant-indoor-palm-tree-modern-pot_632498-25513.jpg?uid=R197613108&ga=GA1.1.1380539113.1739698930&semt=ais_hybrid&w=740"
-  },
-  {
-    "id": 21,
-    "commonName": "Bamboo",
-    "scientificName": "Bambusa vulgaris",
-    "category": "Both",
-    "description": "A fast-growing grass with tall, green culms. Used in Indian gardens and as indoor decor.",
-    "careTips": {
-      "light": "Full sun to partial shade.",
-      "water": "Water regularly; keep soil moist.",
-      "soil": "Well-draining, loamy soil.",
-      "temperature": "60-95°F (15-35°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7a7",
+        "id": 21,
+        "commonName": "Bamboo",
+        "scientificName": "Bambusa vulgaris",
+        "category": "Both",
+        "description": "A fast-growing grass with tall, green culms. Used in Indian gardens and as indoor decor.",
+        "careTips": {
+            "light": "Full sun to partial shade.",
+            "water": "Water regularly; keep soil moist.",
+            "soil": "Well-draining, loamy soil.",
+            "temperature": "60-95°F (15-35°C).",
+            "_id": "69791c0ae635de052005c91f"
+        },
+        "price": 500,
+        "image": "assets/images/bamboo.jpg",
+        "toxicity": "Non-toxic to pets and humans.",
+        "maintenance": "Low",
+        "airPurifying": true,
+        "image_url": "https://img.freepik.com/free-psd/lush-green-dracaena-plant-elegant-white-pot-perfect-indoor-greenery_191095-81449.jpg"
     },
-    "price": 500,
-    "image": "assets/images/bamboo.jpg",
-    "toxicity": "Non-toxic to pets and humans.",
-    "maintenance": "Low",
-    "airPurifying": true,
-    "image_url": "https://img.freepik.com/free-psd/lush-green-dracaena-plant-elegant-white-pot-perfect-indoor-greenery_191095-81449.jpg"
-  },
-  {
-    "id": 22,
-    "commonName": "Marigold",
-    "scientificName": "Tagetes erecta",
-    "category": "Outdoor",
-    "description": "A bright annual with yellow or orange flowers. Widely used in Indian festivals and gardens.",
-    "careTips": {
-      "light": "Full sun.",
-      "water": "Water regularly; avoid overwatering.",
-      "soil": "Well-draining, fertile soil.",
-      "temperature": "60-85°F (15-29°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7a8",
+        "id": 22,
+        "commonName": "Marigold",
+        "scientificName": "Tagetes erecta",
+        "category": "Outdoor",
+        "description": "A bright annual with yellow or orange flowers. Widely used in Indian festivals and gardens.",
+        "careTips": {
+            "light": "Full sun.",
+            "water": "Water regularly; avoid overwatering.",
+            "soil": "Well-draining, fertile soil.",
+            "temperature": "60-85°F (15-29°C).",
+            "_id": "69791c0ae635de052005c920"
+        },
+        "price": 100,
+        "image": "assets/images/marigold.jpg",
+        "toxicity": "Non-toxic to pets and humans.",
+        "maintenance": "Low",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/premium-photo/tagetis-erectaincaii-gold-pot-white-background_140241-5252.jpg"
     },
-    "price": 100,
-    "image": "assets/images/marigold.jpg",
-    "toxicity": "Non-toxic to pets and humans.",
-    "maintenance": "Low",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/premium-photo/tagetis-erectaincaii-gold-pot-white-background_140241-5252.jpg"
-  },
-  {
-    "id": 23,
-    "commonName": "Mint",
-    "scientificName": "Mentha spicata",
-    "category": "Both",
-    "description": "A fragrant herb with serrated green leaves, used in Indian cuisine and teas.",
-    "careTips": {
-      "light": "Partial shade to full sun.",
-      "water": "Water regularly; keep soil moist.",
-      "soil": "Well-draining, fertile soil.",
-      "temperature": "60-80°F (15-27°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7a9",
+        "id": 23,
+        "commonName": "Mint",
+        "scientificName": "Mentha spicata",
+        "category": "Both",
+        "description": "A fragrant herb with serrated green leaves, used in Indian cuisine and teas.",
+        "careTips": {
+            "light": "Partial shade to full sun.",
+            "water": "Water regularly; keep soil moist.",
+            "soil": "Well-draining, fertile soil.",
+            "temperature": "60-80°F (15-27°C).",
+            "_id": "69791c0ae635de052005c921"
+        },
+        "price": 120,
+        "image": "assets/images/mint.jpg",
+        "toxicity": "Non-toxic to pets and humans.",
+        "maintenance": "Low",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/premium-photo/close-up-potted-plant-table_1048944-11207897.jpg"
     },
-    "price": 120,
-    "image": "assets/images/mint.jpg",
-    "toxicity": "Non-toxic to pets and humans.",
-    "maintenance": "Low",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/premium-photo/close-up-potted-plant-table_1048944-11207897.jpg"
-  },
-  {
-    "id": 24,
-    "commonName": "Lemon Tree",
-    "scientificName": "Citrus limon",
-    "category": "Outdoor",
-    "description": "A small tree with glossy leaves and tangy lemons. Grown in Indian backyards.",
-    "careTips": {
-      "light": "Full sun.",
-      "water": "Water weekly; keep soil moist.",
-      "soil": "Well-draining, slightly acidic soil.",
-      "temperature": "60-90°F (15-32°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7aa",
+        "id": 24,
+        "commonName": "Lemon Tree",
+        "scientificName": "Citrus limon",
+        "category": "Outdoor",
+        "description": "A small tree with glossy leaves and tangy lemons. Grown in Indian backyards.",
+        "careTips": {
+            "light": "Full sun.",
+            "water": "Water weekly; keep soil moist.",
+            "soil": "Well-draining, slightly acidic soil.",
+            "temperature": "60-90°F (15-32°C).",
+            "_id": "69791c0ae635de052005c922"
+        },
+        "price": 700,
+        "image": "assets/images/lemon_tree.jpg",
+        "toxicity": "Toxic to pets if ingested.",
+        "maintenance": "Moderate",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/premium-photo/lemon-tree-isolated-white-background-3d-render-high-resolution_600567-212.jpg"
     },
-    "price": 700,
-    "image": "assets/images/lemon_tree.jpg",
-    "toxicity": "Toxic to pets if ingested.",
-    "maintenance": "Moderate",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/premium-photo/lemon-tree-isolated-white-background-3d-render-high-resolution_600567-212.jpg"
-  },
-  {
-    "id": 25,
-    "commonName": "Ficus",
-    "scientificName": "Ficus benjamina",
-    "category": "Indoor",
-    "description": "A graceful tree with drooping green leaves, popular in Indian homes as a decorative plant.",
-    "careTips": {
-      "light": "Bright indirect light.",
-      "water": "Water weekly; let top inch of soil dry out.",
-      "soil": "Well-draining potting mix.",
-      "temperature": "65-85°F (18-29°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7ab",
+        "id": 25,
+        "commonName": "Ficus",
+        "scientificName": "Ficus benjamina",
+        "category": "Indoor",
+        "description": "A graceful tree with drooping green leaves, popular in Indian homes as a decorative plant.",
+        "careTips": {
+            "light": "Bright indirect light.",
+            "water": "Water weekly; let top inch of soil dry out.",
+            "soil": "Well-draining potting mix.",
+            "temperature": "65-85°F (18-29°C).",
+            "_id": "69791c0ae635de052005c923"
+        },
+        "price": 450,
+        "image": "assets/images/ficus.jpg",
+        "toxicity": "Toxic to pets and humans if ingested.",
+        "maintenance": "Moderate",
+        "airPurifying": true,
+        "image_url": "https://img.freepik.com/free-photo/fiddle-leaf-fig-plant-pot_53876-146301.jpg"
     },
-    "price": 450,
-    "image": "assets/images/ficus.jpg",
-    "toxicity": "Toxic to pets and humans if ingested.",
-    "maintenance": "Moderate",
-    "airPurifying": true,
-    "image_url": "https://img.freepik.com/free-photo/fiddle-leaf-fig-plant-pot_53876-146301.jpg"
-  },
-  {
-    "id": 26,
-    "commonName": "Coconut Tree",
-    "scientificName": "Cocos nucifera",
-    "category": "Outdoor",
-    "description": "A tall palm with feathery fronds and coconuts, iconic in coastal India.",
-    "careTips": {
-      "light": "Full sun.",
-      "water": "Water weekly; prefers humid conditions.",
-      "soil": "Well-draining, sandy soil.",
-      "temperature": "70-100°F (21-38°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7ac",
+        "id": 26,
+        "commonName": "Coconut Tree",
+        "scientificName": "Cocos nucifera",
+        "category": "Outdoor",
+        "description": "A tall palm with feathery fronds and coconuts, iconic in coastal India.",
+        "careTips": {
+            "light": "Full sun.",
+            "water": "Water weekly; prefers humid conditions.",
+            "soil": "Well-draining, sandy soil.",
+            "temperature": "70-100°F (21-38°C).",
+            "_id": "69791c0ae635de052005c924"
+        },
+        "price": 1000,
+        "image": "assets/images/coconut_tree.jpg",
+        "toxicity": "Non-toxic to pets and humans.",
+        "maintenance": "Low",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/free-photo/agave-tree-white-pot_53876-133129.jpg"
     },
-    "price": 1000,
-    "image": "assets/images/coconut_tree.jpg",
-    "toxicity": "Non-toxic to pets and humans.",
-    "maintenance": "Low",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/free-photo/agave-tree-white-pot_53876-133129.jpg"
-  },
-  {
-    "id": 27,
-    "commonName": "Dracaena",
-    "scientificName": "Dracaena fragrans",
-    "category": "Indoor",
-    "description": "A tall plant with long, variegated leaves, often used in Indian interiors.",
-    "careTips": {
-      "light": "Low to bright indirect light.",
-      "water": "Water every 2 weeks; let soil dry out.",
-      "soil": "Well-draining potting mix.",
-      "temperature": "65-80°F (18-27°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7ad",
+        "id": 27,
+        "commonName": "Dracaena",
+        "scientificName": "Dracaena fragrans",
+        "category": "Indoor",
+        "description": "A tall plant with long, variegated leaves, often used in Indian interiors.",
+        "careTips": {
+            "light": "Low to bright indirect light.",
+            "water": "Water every 2 weeks; let soil dry out.",
+            "soil": "Well-draining potting mix.",
+            "temperature": "65-80°F (18-27°C).",
+            "_id": "69791c0ae635de052005c925"
+        },
+        "price": 400,
+        "image": "assets/images/dracaena.jpg",
+        "toxicity": "Toxic to pets if ingested.",
+        "maintenance": "Low",
+        "airPurifying": true,
+        "image_url": "https://img.freepik.com/free-photo/palm-tree-house-plant-pot_53876-125837.jpg"
     },
-    "price": 400,
-    "image": "assets/images/dracaena.jpg",
-    "toxicity": "Toxic to pets if ingested.",
-    "maintenance": "Low",
-    "airPurifying": true,
-    "image_url": "https://img.freepik.com/free-photo/palm-tree-house-plant-pot_53876-125837.jpg"
-  },
-  {
-    "id": 28,
-    "commonName": "Chrysanthemum",
-    "scientificName": "Chrysanthemum morifolium",
-    "category": "Outdoor",
-    "description": "A flowering plant with colorful blooms, popular in Indian gardens and festivals.",
-    "careTips": {
-      "light": "Full sun.",
-      "water": "Water regularly; keep soil moist.",
-      "soil": "Well-draining, fertile soil.",
-      "temperature": "60-80°F (15-27°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7ae",
+        "id": 28,
+        "commonName": "Chrysanthemum",
+        "scientificName": "Chrysanthemum morifolium",
+        "category": "Outdoor",
+        "description": "A flowering plant with colorful blooms, popular in Indian gardens and festivals.",
+        "careTips": {
+            "light": "Full sun.",
+            "water": "Water regularly; keep soil moist.",
+            "soil": "Well-draining, fertile soil.",
+            "temperature": "60-80°F (15-27°C).",
+            "_id": "69791c0ae635de052005c926"
+        },
+        "price": 150,
+        "image": "assets/images/chrysanthemum.jpg",
+        "toxicity": "Toxic to pets if ingested.",
+        "maintenance": "Moderate",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/premium-photo/close-up-yellow-flower-pot-table_1048944-25347104.jpg"
     },
-    "price": 150,
-    "image": "assets/images/chrysanthemum.jpg",
-    "toxicity": "Toxic to pets if ingested.",
-    "maintenance": "Moderate",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/premium-photo/close-up-yellow-flower-pot-table_1048944-25347104.jpg"
-  },
-  {
-    "id": 29,
-    "commonName": "Giloy",
-    "scientificName": "Tinospora cordifolia",
-    "category": "Outdoor",
-    "description": "A climbing medicinal vine with heart-shaped leaves, used in Ayurveda for immunity.",
-    "careTips": {
-      "light": "Partial shade to full sun.",
-      "water": "Water weekly; keep soil moist.",
-      "soil": "Well-draining, loamy soil.",
-      "temperature": "60-95°F (15-35°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7af",
+        "id": 29,
+        "commonName": "Giloy",
+        "scientificName": "Tinospora cordifolia",
+        "category": "Outdoor",
+        "description": "A climbing medicinal vine with heart-shaped leaves, used in Ayurveda for immunity.",
+        "careTips": {
+            "light": "Partial shade to full sun.",
+            "water": "Water weekly; keep soil moist.",
+            "soil": "Well-draining, loamy soil.",
+            "temperature": "60-95°F (15-35°C).",
+            "_id": "69791c0ae635de052005c927"
+        },
+        "price": 200,
+        "image": "assets/images/giloy.jpg",
+        "toxicity": "Non-toxic to pets and humans.",
+        "maintenance": "Low",
+        "airPurifying": false,
+        "image_url": "https://img.freepik.com/free-photo/pepper-face-plant-small-pot_53876-94408.jpg"
     },
-    "price": 200,
-    "image": "assets/images/giloy.jpg",
-    "toxicity": "Non-toxic to pets and humans.",
-    "maintenance": "Low",
-    "airPurifying": false,
-    "image_url": "https://img.freepik.com/free-photo/pepper-face-plant-small-pot_53876-94408.jpg"
-  },
-  {
-    "id": 30,
-    "commonName": "Rubber Plant",
-    "scientificName": "Ficus elastica",
-    "category": "Indoor",
-    "description": "A striking plant with large, glossy dark green leaves, popular in Indian homes.",
-    "careTips": {
-      "light": "Bright indirect light.",
-      "water": "Water every 1-2 weeks; let soil dry out.",
-      "soil": "Well-draining potting mix.",
-      "temperature": "65-80°F (18-27°C)."
+    {
+        "_id": "69749b9ddb21fe5b9edbe7b0",
+        "id": 30,
+        "commonName": "Rubber Plant",
+        "scientificName": "Ficus elastica",
+        "category": "Indoor",
+        "description": "A striking plant with large, glossy dark green leaves, popular in Indian homes.",
+        "careTips": {
+            "light": "Bright indirect light.",
+            "water": "Water every 1-2 weeks; let soil dry out.",
+            "soil": "Well-draining potting mix.",
+            "temperature": "65-80°F (18-27°C).",
+            "_id": "69791c0ae635de052005c928"
+        },
+        "price": 500,
+        "image": "assets/images/rubber_plant.jpg",
+        "toxicity": "Toxic to pets and humans if ingested.",
+        "maintenance": "Moderate",
+        "airPurifying": true,
+        "image_url": "https://img.freepik.com/free-photo/calathea-plant-pot_53876-142816.jpg"
     },
-    "price": 500,
-    "image": "assets/images/rubber_plant.jpg",
-    "toxicity": "Toxic to pets and humans if ingested.",
-    "maintenance": "Moderate",
-    "airPurifying": true,
-    "image_url": "https://img.freepik.com/free-photo/calathea-plant-pot_53876-142816.jpg"
-  },
-  {
-    "id": 31,
-    "name": "Ceramic Indoor Pot",
-    "category": "Accessories",
-    "description": "A sleek, white ceramic pot with drainage hole, ideal for indoor plants like Snake Plant or Peace Lily, enhancing your green living room aesthetic.",
-    "price": 150,
-    "image": "assets/images/ceramic_pot.jpg",
-    "image_url": "https://img.freepik.com/free-photo/elegant-modern-vase-design_23-2150529815.jpg"
-  },
-  {
-    "id": 32,
-    "name": "Mini Plant Planter Set",
-    "category": "Accessories",
-    "description": "A set of three small terracotta pots, perfect for a collection of attractive mini plants like Basil or Mint for your kitchen or balcony.",
-    "price": 120,
-    "image": "assets/images/mini_planter_set.jpg",
-    "image_url": "https://5.imimg.com/data5/ECOM/Default/2024/9/448757890/BL/YI/WK/97517045/01-fa9702ab-da05-4cbe-a497-ddd4dcd8e871-1000x1000.jpg"
-  },
-  {
-    "id": 33,
-    "name": "Garden Pruning Shears",
-    "category": "Accessories",
-    "description": "Sharp, durable shears for trimming outdoor shrubs like Boxwood or Hibiscus, ensuring healthy growth in gardens or parks.",
-    "price": 200,
-    "image": "assets/images/pruning_shears.jpg",
-    "image_url": "https://img.freepik.com/free-psd/hedge-shears-flower-isolated-transparent-background_191095-33206.jpg"
-  },
-  {
-    "id": 34,
-    "name": "Succulent Soil Mix",
-    "category": "Accessories",
-    "description": "A well-draining soil blend tailored for cactus plants like Aloe Vera, promoting optimal growth for your desert collection.",
-    "price": 80,
-    "image": "assets/images/succulent_soil.jpg",
-    "image_url": "https://img.freepik.com/free-photo/top-view-clay-different-colors_23-2148862918.jpg"
-  },
-  {
-    "id": 35,
-    "name": "Watering Can",
-    "category": "Accessories",
-    "description": "A 1-liter metal watering can with a precise spout, ideal for watering kitchen plants like Curry Leaf or Tulsi without overwatering.",
-    "price": 100,
-    "image": "assets/images/watering_can.jpg",
-    "image_url": "https://img.freepik.com/premium-photo/close-up-view-blue-water-sprinkler-isolated-white-background_69593-3401.jpg"
-  },
-  {
-    "id": 36,
-    "name": "Hanging Basket",
-    "category": "Accessories",
-    "description": "A woven hanging basket for trailing indoor plants like Pothos or Spider Plant, adding charm to your living room decor.",
-    "price": 130,
-    "image": "assets/images/hanging_basket.jpg",
-    "image_url": "https://img.freepik.com/free-photo/angel-vine-indoor-hanging-plant_53876-133146.jpg"
-  },
-  {
-    "id": 37,
-    "name": "Organic Fertilizer",
-    "category": "Accessories",
-    "description": "A nutrient-rich organic fertilizer for outdoor plants like Roses or Mango Trees, boosting vibrant blooms and fruit production.",
-    "price": 90,
-    "image": "assets/images/organic_fertilizer.jpg",
-    "image_url": "https://img.freepik.com/free-psd/new-life-sprouting-tiny-seedling-emerging-from-rich-soil-with-gardening-trowel_191095-84613.jpg"
-  },
-  {
-    "id": 38,
-    "name": "Plant Support Trellis",
-    "category": "Accessories",
-    "description": "A sturdy metal trellis for climbing plants like Bougainvillea or Giloy, perfect for outdoor garden displays.",
-    "price": 250,
-    "image": "assets/images/plant_trellis.jpg",
-    "image_url": "https://img.freepik.com/premium-photo/close-up-ivy-growing-window_1048944-29696203.jpg"
-  }
+    {
+        "_id": "69749b9ddb21fe5b9edbe7b1",
+        "id": 31,
+        "commonName": "Ceramic Indoor Pot",
+        "category": "Accessories",
+        "description": "A sleek, white ceramic pot with drainage hole, ideal for indoor plants like Snake Plant or Peace Lily, enhancing your green living room aesthetic.",
+        "price": 150,
+        "image": "assets/images/ceramic_pot.jpg",
+        "image_url": "https://img.freepik.com/free-photo/elegant-modern-vase-design_23-2150529815.jpg"
+    },
+    {
+        "_id": "69749b9ddb21fe5b9edbe7b2",
+        "id": 32,
+        "commonName": "Mini Plant Planter Set",
+        "category": "Accessories",
+        "description": "A set of three small terracotta pots, perfect for a collection of attractive mini plants like Basil or Mint for your kitchen or balcony.",
+        "price": 120,
+        "image": "assets/images/mini_planter_set.jpg",
+        "image_url": "https://5.imimg.com/data5/ECOM/Default/2024/9/448757890/BL/YI/WK/97517045/01-fa9702ab-da05-4cbe-a497-ddd4dcd8e871-1000x1000.jpg"
+    },
+    {
+        "_id": "69749b9ddb21fe5b9edbe7b3",
+        "id": 33,
+        "commonName": "Garden Pruning Shears",
+        "category": "Accessories",
+        "description": "Sharp, durable shears for trimming outdoor shrubs like Boxwood or Hibiscus, ensuring healthy growth in gardens or parks.",
+        "price": 200,
+        "image": "assets/images/pruning_shears.jpg",
+        "image_url": "https://img.freepik.com/free-psd/hedge-shears-flower-isolated-transparent-background_191095-33206.jpg"
+    },
+    {
+        "_id": "69749b9ddb21fe5b9edbe7b4",
+        "id": 34,
+        "commonName": "Succulent Soil Mix",
+        "category": "Accessories",
+        "description": "A well-draining soil blend tailored for cactus plants like Aloe Vera, promoting optimal growth for your desert collection.",
+        "price": 80,
+        "image": "assets/images/succulent_soil.jpg",
+        "image_url": "https://img.freepik.com/free-photo/top-view-clay-different-colors_23-2148862918.jpg"
+    },
+    {
+        "_id": "69749b9ddb21fe5b9edbe7b5",
+        "id": 35,
+        "commonName": "Watering Can",
+        "category": "Accessories",
+        "description": "A 1-liter metal watering can with a precise spout, ideal for watering kitchen plants like Curry Leaf or Tulsi without overwatering.",
+        "price": 100,
+        "image": "assets/images/watering_can.jpg",
+        "image_url": "https://img.freepik.com/premium-photo/close-up-view-blue-water-sprinkler-isolated-white-background_69593-3401.jpg"
+    },
+    {
+        "_id": "69749b9ddb21fe5b9edbe7b6",
+        "id": 36,
+        "commonName": "Hanging Basket",
+        "category": "Accessories",
+        "description": "A woven hanging basket for trailing indoor plants like Pothos or Spider Plant, adding charm to your living room decor.",
+        "price": 130,
+        "image": "assets/images/hanging_basket.jpg",
+        "image_url": "https://img.freepik.com/free-photo/angel-vine-indoor-hanging-plant_53876-133146.jpg"
+    },
+    {
+        "_id": "69749b9ddb21fe5b9edbe7b7",
+        "id": 37,
+        "commonName": "Organic Fertilizer",
+        "category": "Accessories",
+        "description": "A nutrient-rich organic fertilizer for outdoor plants like Roses or Mango Trees, boosting vibrant blooms and fruit production.",
+        "price": 90,
+        "image": "assets/images/organic_fertilizer.jpg",
+        "image_url": "https://img.freepik.com/free-psd/new-life-sprouting-tiny-seedling-emerging-from-rich-soil-with-gardening-trowel_191095-84613.jpg"
+    },
+    {
+        "_id": "69749b9ddb21fe5b9edbe7b8",
+        "id": 38,
+        "commonName": "Plant Support Trellis",
+        "category": "Accessories",
+        "description": "A sturdy metal trellis for climbing plants like Bougainvillea or Giloy, perfect for outdoor garden displays.",
+        "price": 250,
+        "image": "assets/images/plant_trellis.jpg",
+        "image_url": "https://img.freepik.com/premium-photo/close-up-ivy-growing-window_1048944-29696203.jpg"
+    }
 ]
-

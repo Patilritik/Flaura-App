@@ -20,12 +20,9 @@ router.get('/plants_info', async (req, res) => {
 router.put('/plants_info/:id', async (req, res) => {
     try {
         const plantId = req.params.id;
-        console.log("plant id",plantId);
         const updates = req.body;
-        console.log("update" , updates);
         // Check if the plant exists
         const plant = await Plant.findById(plantId);
-        console.log("plant",plant);
         if (!plant) {
             return res.status(404).json({ message: 'Plant not found' });
         }
@@ -44,29 +41,51 @@ router.put('/plants_info/:id', async (req, res) => {
     }
 });
 
-// SEARCH PLANT INFO BY NAME
+// SEARCH PLANT INFO BY NAME (safe against null fields)
 router.post('/plants_info/search', async (req, res) => {
     try {
-        const { searchInput } = req.body;
-        console.log("Req body",req.body);
-        console.log("search input",searchInput);
-        // Find plants that match the name (case-insensitive)
-        const plants = await Plant.find({
-            $or: [
-                { commonName: { $regex: searchInput, $options: 'i' } },
-                { scientificName: { $regex: searchInput, $options: 'i' } },
-                { name: { $regex: searchInput, $options: 'i' } },
-            ],
-        });
+        const rawInput = (req.body?.searchInput || '').trim();
+        if (!rawInput) {
+            return res.status(400).json({ message: 'searchInput is required' });
+        }
 
-        if (plants.length === 0) {
+        const regex = new RegExp(rawInput, 'i');
+
+        // Coalesce potentially null fields to empty strings before regex match
+        const plants = await Plant.aggregate([
+            {
+                $addFields: {
+                    _safeCommonName: { $ifNull: ['$commonName', ''] },
+                    _safeScientificName: { $ifNull: ['$scientificName', ''] },
+                    _safeName: { $ifNull: ['$name', ''] },
+                },
+            },
+            {
+                $match: {
+                    $or: [
+                        { _safeCommonName: { $regex: regex } },
+                        { _safeScientificName: { $regex: regex } },
+                        { _safeName: { $regex: regex } },
+                    ],
+                },
+            },
+            {
+                $project: {
+                    _safeCommonName: 0,
+                    _safeScientificName: 0,
+                    _safeName: 0,
+                },
+            },
+        ]);
+
+        if (!plants.length) {
             return res.status(404).json({ message: 'No plants found' });
         }
 
         res.status(200).json(plants);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
 
@@ -77,8 +96,9 @@ router.get('/plants_info/:id', async (req, res) => {
         console.log("plant id",plantId);
         // Find the plant by ID
         const plant = await Plant.findById(plantId);
-
+        console.log("plant",plant);
         if (!plant) {
+            console.log("Plant not found");
             return res.status(404).json({ message: 'Plant not found' });
         }
         res.status(200).json(plant);

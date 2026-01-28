@@ -38,7 +38,7 @@ router.post('/update_cart', async (req, res) => {
     // Update or insert cart item
     const cartItem = await Cart.findOneAndUpdate(
       { user_id: userId, product_id },
-      { cart_count: cartCount, product_name: plant.product_name },
+      { cart_count: cartCount, product_name: plant.commonName },
       { new: true, upsert: true } // Return updated doc, create if not exists
     );
 
@@ -58,7 +58,6 @@ router.post('/get_cart_item', async (req, res) => {
     if (!userId || !product_id) {
       return res.status(400).json({ message: 'userId and product_id are required' });
     }
-
     const cartItem = await Cart.findOne({ user_id: userId, product_id });
 
     if (!cartItem) {
@@ -88,15 +87,18 @@ router.get('/get_cart_items/:userId', async (req, res) => {
     const updatedCartItems = await Promise.all(
       cartItems.map(async (item) => {
         const product = await Plant.findById(item.product_id); // yaha change
+        console.log("Product in cart item:", product);
         if (product) {
           item = item.toObject();
           item.price = product.price;         // yaha add
           item.image_url = product.image_url; // yaha add
+          item.commonName = product.commonName;     // yaha add
+          item.scientificName = product.scientificName; // yaha add
         }
         return item;
       })
     );
-
+    console.log("Updated Cart Items: ", updatedCartItems);
     res.status(200).json(updatedCartItems);
 
   } catch (error) {

@@ -12,17 +12,19 @@ import {
   Alert,
   StatusBar,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  Dimensions
 } from 'react-native';
 import { PermissionsAndroid } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-// Import both Camera and Library functions
 import { launchImageLibrary, launchCamera } from 'react-native-image-picker'; 
 import axios from 'axios';
 import API_BASE_URL from '../apiConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import colors from '../utils/colors';
 import ToastManager from '../components/Toast/ToastManager';
+
+const { width } = Dimensions.get('window');
 
 const EditProfileScreen = () => {
   const navigation = useNavigation();
@@ -39,106 +41,38 @@ const EditProfileScreen = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const requestMediaPermission = async () => {
-    if (Platform.OS !== 'android') return true;
-
-    const mediaPermission = Platform.Version >= 33
-      ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
-      : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
-
-    const result = await PermissionsAndroid.request(mediaPermission);
-    return result === PermissionsAndroid.RESULTS.GRANTED;
-  };
-
-  const requestCameraPermission = async () => {
-    if (Platform.OS !== 'android') return true;
-    const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
-    return result === PermissionsAndroid.RESULTS.GRANTED;
-  };
-
   const handleInputChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
   };
 
-  /**
-   * Opens an Alert to let user choose between Camera or Gallery
-   */
   const handlePickImage = () => {
-    const options = {
-      mediaType: 'photo',
-      includeBase64: false,
-      maxHeight: 1000,
-      maxWidth: 1000,
-      quality: 0.8,
-    };
-
-    const pickFromGallery = async () => {
-      const allowed = await requestMediaPermission();
-      if (!allowed) {
-        Alert.alert('Permission required', 'Enable photo library permission to pick an image.');
-        return;
-      }
-      launchImageLibrary(options, onSelectResponse);
-    };
-
-    const takePhoto = async () => {
-      const cameraAllowed = await requestCameraPermission();
-      const mediaAllowed = await requestMediaPermission();
-      if (!cameraAllowed || !mediaAllowed) {
-        Alert.alert('Permission required', 'Enable camera and storage permission to take a photo.');
-        return;
-      }
-      launchCamera(options, onSelectResponse);
-    };
-
+    const options = { mediaType: 'photo', quality: 0.8 };
     Alert.alert(
       'Update Profile Picture',
-      'Select a source for your image:',
+      'Choose a source:',
       [
-        {
-          text: 'Camera',
-          onPress: takePhoto,
-        },
-        {
-          text: 'Gallery',
-          onPress: pickFromGallery,
-        },
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-      ],
-      { cancelable: true }
+        { text: 'Camera', onPress: () => launchCamera(options, onSelectResponse) },
+        { text: 'Gallery', onPress: () => launchImageLibrary(options, onSelectResponse) },
+        { text: 'Cancel', style: 'cancel' },
+      ]
     );
   };
 
-  /**
-   * Handles the response from both Camera and Gallery
-   */
   const onSelectResponse = (response) => {
-    if (response.didCancel) {
-      console.log('User cancelled selection');
-    } else if (response.errorCode) {
-      console.log('Picker Error: ', response.errorMessage);
-      Alert.alert('Error', 'Could not access media: ' + response.errorMessage);
-    } else if (response.assets && response.assets.length > 0) {
-      const asset = response.assets[0];
-      setSelectedImage(asset);
+    if (response.assets && response.assets.length > 0) {
+      setSelectedImage(response.assets[0]);
     }
   };
 
- const handleSave = async () => {
+  const handleSave = async () => {
     setLoading(true);
     try {
       const userId = await AsyncStorage.getItem('userId');
       const data = new FormData();
-      
-      // Append text data
       data.append('name', formData.name);
       data.append('phone', formData.phone);
       data.append('address', formData.address);
 
-      // Append image data
       if (selectedImage) {
         data.append('avatar', {
           uri: Platform.OS === 'android' ? selectedImage.uri : selectedImage.uri.replace('file://', ''),
@@ -162,18 +96,24 @@ const EditProfileScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+      
       <KeyboardAvoidingView
         style={{ flex: 1 }}
+        // behavior="padding" is usually best for iOS. 
+        // behavior="height" or no behavior at all often works better for Android.
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.select({ ios: 80, android: (StatusBar.currentHeight || 0) + 60 })}
+        // Offset helps if you have a navigation header
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
       >
         <ScrollView
+          // contentContainerStyle needs flexGrow: 1 so the content can expand
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          {/* Profile Image Picker Section */}
-          <View style={styles.avatarPickerContainer}>
+          {/* Profile Image Section */}
+          <View style={styles.avatarSection}>
             <View style={styles.imageWrapper}>
               <Image
                 source={{ 
@@ -181,179 +121,176 @@ const EditProfileScreen = () => {
                 }}
                 style={styles.avatarPreview}
               />
-              <TouchableOpacity style={styles.editBadge} onPress={handlePickImage}>
-                <Text style={styles.editBadgeText}>Edit</Text>
+              <TouchableOpacity style={styles.cameraIconBtn} onPress={handlePickImage} activeOpacity={0.8}>
+                 <Text style={{fontSize: 14}}>📷</Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.avatarLabel}>Profile Picture</Text>
           </View>
 
+          {/* Form Fields */}
           <View style={styles.formContainer}>
-            {/* Name Input */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Name</Text>
-              <TextInput
-                style={styles.input}
-                value={formData.name}
-                onChangeText={(text) => handleInputChange('name', text)}
-                placeholder="Enter your name"
-                placeholderTextColor="#888"
-              />
-            </View>
+            <InputItem 
+              label="Full Name" 
+              value={formData.name} 
+              onChangeText={(t) => handleInputChange('name', t)} 
+              placeholder="Enter your name"
+            />
+            
+            <InputItem 
+              label="Email Address" 
+              value={formData.email} 
+              editable={false} 
+              style={styles.disabledInput}
+            />
 
-            {/* Email Input (Non-editable) */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Email</Text>
-              <TextInput
-                style={[styles.input, styles.inputDisabled]}
-                value={formData.email}
-                editable={false}
-                placeholderTextColor="#888"
-              />
-            </View>
+            <InputItem 
+              label="Phone Number" 
+              value={formData.phone} 
+              onChangeText={(t) => handleInputChange('phone', t)} 
+              keyboardType="phone-pad"
+              placeholder="Enter phone number"
+            />
 
-            {/* Phone Input */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Phone</Text>
-              <TextInput
-                style={styles.input}
-                value={formData.phone}
-                onChangeText={(text) => handleInputChange('phone', text)}
-                placeholder="Enter your phone number"
-                placeholderTextColor="#888"
-                keyboardType="phone-pad"
-              />
-            </View>
-
-            {/* Address Input */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Address</Text>
-              <TextInput
-                style={[styles.input, styles.inputMultiline]}
-                value={formData.address}
-                onChangeText={(text) => handleInputChange('address', text)}
-                placeholder="Enter your address"
-                placeholderTextColor="#888"
-                multiline
-              />
-            </View>
-
-            {/* Save Button */}
-            <TouchableOpacity
-              style={[styles.saveButton, loading && styles.saveButtonDisabled]}
-              onPress={handleSave}
-              disabled={loading}
-            >
-              {loading ? (
-                <ActivityIndicator size="small" color="#fff" />
-              ) : (
-                <Text style={styles.saveButtonText}>Save Changes</Text>
-              )}
-            </TouchableOpacity>
+            <InputItem 
+              label="Home Address" 
+              value={formData.address} 
+              onChangeText={(t) => handleInputChange('address', t)} 
+              multiline
+              placeholder="Enter your full address"
+            />
           </View>
 
-          <View style={styles.bottomSpacer} />
+          {/* MATCHED ACTION BUTTON */}
+          <TouchableOpacity
+            style={[styles.actionBtn, styles.editBtn, loading && { opacity: 0.7 }]}
+            onPress={handleSave}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator color="#FFF" />
+            ) : (
+              <Text style={styles.editBtnText}>Save Changes</Text>
+            )}
+          </TouchableOpacity>
+
+          {/* Extra space at bottom to ensure inputs can scroll up above the keyboard */}
+          <View style={{ height: 100 }} />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
+const InputItem = ({ label, value, onChangeText, placeholder, editable = true, multiline = false, keyboardType = 'default', style }) => (
+  <View style={styles.inputWrapper}>
+    <Text style={styles.inputLabel}>{label}</Text>
+    <TextInput
+      style={[styles.textInput, multiline && styles.multiLine, style]}
+      value={value}
+      onChangeText={onChangeText}
+      placeholder={placeholder}
+      editable={editable}
+      multiline={multiline}
+      keyboardType={keyboardType}
+      placeholderTextColor="#BBB"
+      // This helps with visibility when the keyboard is open
+      onFocus={(e) => {}} 
+    />
+  </View>
+);
+
 const styles = StyleSheet.create({
   container: {
-    marginTop: StatusBar.currentHeight,
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#FFFFFF',
   },
   scrollContent: {
-    paddingHorizontal: 20,
-    paddingBottom: 40,
+    paddingHorizontal: 24,
+    paddingTop: 20,
+    // flexGrow is key to making the ScrollView work inside KeyboardAvoidingView
+    flexGrow: 1, 
   },
-  avatarPickerContainer: {
+  avatarSection: {
     alignItems: 'center',
-    marginVertical: 25,
+    marginBottom: 40,
   },
   imageWrapper: {
     position: 'relative',
   },
   avatarPreview: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
-    backgroundColor: '#e1e1e1',
-    borderWidth: 3,
-    borderColor: '#fff',
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#F3F3F3',
+    borderWidth: 1,
+    borderColor: '#EEE',
   },
-  editBadge: {
+  cameraIconBtn: {
     position: 'absolute',
-    bottom: 0,
-    right: 0,
+    bottom: 5,
+    right: 5,
     backgroundColor: colors.primaryGreen,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: '#fff',
-  },
-  editBadgeText: {
-    color: '#fff',
-    fontSize: 12,
-    fontFamily: 'Poppins-SemiBold',
-  },
-  avatarLabel: {
-    marginTop: 10,
-    fontSize: 14,
-    fontFamily: 'Poppins-Medium',
-    color: '#666',
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 3,
+    borderColor: '#FFF',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
   },
   formContainer: {
-    width: '100%',
+    marginBottom: 30,
   },
-  inputContainer: {
-    marginBottom: 20,
+  inputWrapper: {
+    marginBottom: 25,
   },
-  label: {
+  inputLabel: {
+    fontSize: 11,
+    fontFamily: 'Poppins-Bold',
+    color: colors.primaryGreen,
+    textTransform: 'uppercase',
+    letterSpacing: 1.2,
+    marginBottom: 6,
+  },
+  textInput: {
     fontSize: 16,
     fontFamily: 'Poppins-SemiBold',
     color: '#333',
-    marginBottom: 5,
+    borderBottomWidth: 1.5,
+    borderBottomColor: '#F0F0F0',
+    paddingVertical: 10,
   },
-  input: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 12,
-    fontSize: 16,
-    fontFamily: 'Poppins-Regular',
-    color: '#333',
-    borderWidth: 1,
-    borderColor: '#ddd',
-  },
-  inputDisabled: {
-    backgroundColor: '#f0f0f0',
-    color: '#888',
-  },
-  inputMultiline: {
-    minHeight: 80,
+  multiLine: {
+    minHeight: 60,
     textAlignVertical: 'top',
   },
-  saveButton: {
-    backgroundColor: colors.primaryGreen,
-    paddingVertical: 15,
-    borderRadius: 10,
+  disabledInput: {
+    color: '#AAA',
+    borderBottomColor: '#F9F9F9',
+  },
+  actionBtn: {
+    height: 56,
+    borderRadius: 18,
+    justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    marginTop: 10,
   },
-  saveButtonDisabled: {
-    backgroundColor: '#a5d6a7',
+  editBtn: {
+    backgroundColor: colors.primaryGreen,
+    shadowColor: colors.primaryGreen,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
   },
-  saveButtonText: {
-    fontSize: 18,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#fff',
-  },
-  bottomSpacer: {
-    height: 20,
+  editBtnText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontFamily: 'Poppins-Bold',
   },
 });
 

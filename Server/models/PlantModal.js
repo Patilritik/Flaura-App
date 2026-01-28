@@ -10,8 +10,9 @@ const careTipsSchema = new mongoose.Schema({
 
 // Define the main Plant schema
 const plantSchema = new mongoose.Schema({
+  _id: { type: String },
   id: { type: Number, unique: true }, // Optional numeric ID used by frontend
-  product_name: { type: String, required: true }, // Common name of the plant
+  commonName: { type: String, required: true }, // Common name of the plant
   scientificName: { type: String, required: true }, // Scientific name of the plant
   category: { type: String, required: true }, // Indoor or Outdoor
   description: { type: String, required: true }, // Description of the plant

@@ -1,15 +1,15 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Text,
   View,
   StyleSheet,
-  SafeAreaView,
   Image,
   ActivityIndicator,
   TouchableOpacity,
   ScrollView,
   StatusBar,
+  Dimensions,
 } from 'react-native';
 import API_BASE_URL from '../apiConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,292 +17,185 @@ import colors from '../utils/colors';
 import ToastManager from '../components/Toast/ToastManager';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
+const { width } = Dimensions.get('window');
+
 const UserProfile = () => {
   const [userDetails, setUserDetails] = useState({});
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigation = useNavigation();
 
   const getUserDetails = async () => {
     setLoading(true);
-    setError(null);
     try {
       const userId = await AsyncStorage.getItem('userId');
-      if (!userId) {
-        ToastManager.show({
-          type: 'error',
-          message: 'User ID not found. Please log in again.',
-          duration: 3000,
-        });
-        setLoading(false);
-        return;
-      }
-
+      if (!userId) { setLoading(false); return; }
       const response = await axios.get(`${API_BASE_URL}api/user/${userId}`);
-      if (response.data) {
-        setUserDetails(response.data);
-      } else {
-        setError('No user details found.');
-      }
-    } catch (error) {
-      console.error('Error fetching user details:', error);
-      setError('Failed to fetch user details. Please try again.');
-      ToastManager.show({
-        type: 'error',
-        message: 'Failed to fetch user details.',
-        duration: 3000,
-      });
+      if (response.data) setUserDetails(response.data);
+    } catch (err) {
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
   const handleLogout = async () => {
-    try {
-      await AsyncStorage.removeItem('userId');
-      ToastManager.show({
-        type: 'success',
-        message: 'Logged out successfully.',
-        duration: 3000,
-      });
-      navigation.replace('Login'); // Replace with your login screen route
-    } catch (error) {
-      console.error('Error during logout:', error);
-      ToastManager.show({
-        type: 'error',
-        message: 'Failed to log out. Please try again.',
-        duration: 3000,
-      });
-    }
+    await AsyncStorage.removeItem('userId');
+    ToastManager.show({ type: 'success', message: 'Logged out', duration: 2000 });
+    navigation.replace('Login');
   };
 
-  const handleEditDetails = () => {
-    navigation.navigate('EditProfileScreen', { userDetails }); // Replace with your edit profile screen route
-  };
+  useFocusEffect(useCallback(() => { getUserDetails(); }, []));
 
-  const handleBackPress = () => {
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-    } else {
-      navigation.navigate('HomeScreen'); // Navigate to home if no back history
-    }
-  };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      getUserDetails();
-    }, [])
-  ); // Refresh data every time screen is focused
+  if (loading) {
+    return (
+      <View style={styles.centerContainer}>
+        <ActivityIndicator size="large" color={colors.primaryGreen} />
+      </View>
+    );
+  }
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* <View style={styles.header}>
-        <TouchableOpacity
-          onPress={handleBackPress}
-          style={styles.backButton}>
-          <Image
-            source={require('../assets/back_arrow_icon.png')}
-            style={styles.headerIcon}
-          />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>User Profile</Text>
-      </View> */}
-
-      {loading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.primaryGreen} />
-          <Text style={styles.loadingText}>Loading...</Text>
-        </View>
-      ) : error ? (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{error}</Text>
-          <TouchableOpacity style={styles.retryButton} onPress={getUserDetails}>
-            <Text style={styles.retryButtonText}>Retry</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          {/* User Avatar */}
-          <View style={styles.avatarContainer}>
+    <View style={styles.container}>
+      <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
+      
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        {/* Compact Header */}
+        <View style={styles.headerBlock}>
+          <View style={styles.avatarWrapper}>
             <Image
               source={{ uri: userDetails?.avatar || 'https://via.placeholder.com/150' }}
               style={styles.avatar}
             />
           </View>
+          <Text style={styles.userNameText}>{userDetails?.name || 'User'}</Text>
+          <Text style={styles.userSubText}>{userDetails?.email || 'Not provided'}</Text>
+        </View>
 
-          {/* User Details Card */}
-          <View style={styles.detailsCard}>
-            <View style={styles.detailRow}>
-              <Text style={styles.label}>Name</Text>
-              <Text style={styles.value}>{userDetails?.name || 'N/A'}</Text>
-            </View>
-            <View style={styles.detailRow}>
-              <Text style={styles.label}>Email</Text>
-              <Text style={styles.value}>{userDetails?.email || 'N/A'}</Text>
-            </View>
-            <View style={styles.detailRow}>
-              <Text style={styles.label}>Phone</Text>
-              <Text style={styles.value}>{userDetails?.phone || 'N/A'}</Text>
-            </View>
-            <View style={styles.detailRow}>
-              <Text style={styles.label}>Address</Text>
-              <Text style={styles.value}>{userDetails.address || 'N/A'}</Text>
-            </View>
+        {/* Content Section */}
+        <View style={styles.contentArea}>
+          <View style={styles.infoCard}>
+            <Text style={styles.cardHeading}>Account Information</Text>
+            <InfoItem label="Full Name" value={userDetails?.name} />
+            <View style={styles.divider} />
+            <InfoItem label="Phone Number" value={userDetails?.phone} />
+            <View style={styles.divider} />
+            <InfoItem label="Address" value={userDetails?.address} />
           </View>
 
-          {/* Edit Details Button */}
-          <TouchableOpacity style={styles.editButton} onPress={handleEditDetails}>
-            <Text style={styles.editButtonText}>Edit Details</Text>
-          </TouchableOpacity>
+          {/* EQUAL SIDE-BY-SIDE BUTTONS */}
+          <View style={styles.buttonRow}>
+            {/* Primary Action Button */}
+            <TouchableOpacity 
+              activeOpacity={0.8}
+              style={[styles.btnBase, styles.primaryActionBtn]} 
+              onPress={() => navigation.navigate('EditProfileScreen', { userDetails })}
+            >
+              <View style={styles.innerGlow}>
+                <Text style={styles.primaryBtnText}>Edit Profile</Text>
+              </View>
+            </TouchableOpacity>
 
-          {/* Logout Button */}
-          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-            <Text style={styles.logoutButtonText}>Logout</Text>
-          </TouchableOpacity>
-
-          <View style={styles.bottomSpacer} />
-        </ScrollView>
-      )}
-    </SafeAreaView>
+            {/* Secondary Action Button */}
+            <TouchableOpacity 
+              activeOpacity={0.7}
+              style={[styles.btnBase, styles.secondaryActionBtn]} 
+              onPress={handleLogout}
+            >
+              <Text style={styles.secondaryBtnText}>Logout</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
+const InfoItem = ({ label, value }) => (
+  <View style={styles.infoRow}>
+    <Text style={styles.infoLabel}>{label}</Text>
+    <Text style={styles.infoValue} numberOfLines={1}>{value || 'N/A'}</Text>
+  </View>
+);
+
 const styles = StyleSheet.create({
-  container: {
-    marginTop: StatusBar.currentHeight, 
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-    zIndex: 1,
-  },
-  backButton: {
-    position: 'absolute',
-    left: 20,
-  },
-  headerIcon: {
-    width: 30,
-    height: 30,
-  },
-  headerText: {
-    fontSize: 24,
-    fontFamily: 'Poppins-Bold',
-    color: '#333',
-    textAlign: 'center',
-    flex: 1,
-  },
-  scrollContent: {
-    paddingHorizontal: 20,
-    paddingTop: 10, // Adjusted to account for header height
-    alignItems: 'center',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    fontSize: 16,
-    fontFamily: 'Poppins-Regular',
-    color: '#666',
-    marginTop: 10,
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  errorText: {
-    fontSize: 18,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#d9534f',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  retryButton: {
+  container: { flex: 1, backgroundColor: '#FFFFFF' },
+  scrollContent: { flexGrow: 1, paddingBottom: 40 },
+  centerContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  
+  headerBlock: {
     backgroundColor: colors.primaryGreen,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
+    alignItems: 'center',
+    paddingTop: 60,
+    paddingBottom: 60,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
   },
-  retryButtonText: {
-    fontSize: 16,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#fff',
+  avatarWrapper: {
+    padding: 3,
+    backgroundColor: 'rgba(255,255,255,0.25)',
+    borderRadius: 60,
+    marginBottom: 10,
   },
-  avatarContainer: {
-    marginBottom: 20,
-  },
-  avatar: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    borderWidth: 3,
-    borderColor: colors.primaryGreen,
-  },
-  detailsCard: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 20,
-    width: '100%',
+  avatar: { width: 100, height: 100, borderRadius: 50, borderWidth: 2, borderColor: '#FFF' },
+  userNameText: { fontSize: 22, fontFamily: 'Poppins-Bold', color: '#FFF' },
+  userSubText: { fontSize: 13, fontFamily: 'Poppins-Regular', color: 'rgba(255,255,255,0.8)' },
+
+  contentArea: { paddingHorizontal: 20, marginTop: -30 },
+  infoCard: {
+    backgroundColor: '#FFF',
+    borderRadius: 30,
+    padding: 24,
+    elevation: 8,
     shadowColor: '#000',
     shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
+    shadowRadius: 20,
     marginBottom: 20,
   },
-  detailRow: {
+  cardHeading: { fontSize: 10, fontFamily: 'Poppins-Bold', color: colors.primaryGreen, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 15 },
+  infoRow: { marginVertical: 6 },
+  infoLabel: { fontSize: 11, fontFamily: 'Poppins-Regular', color: '#BBB' },
+  infoValue: { fontSize: 14, fontFamily: 'Poppins-SemiBold', color: '#333' },
+  divider: { height: 1, backgroundColor: '#F0F0F0', marginVertical: 4 },
+
+  /* EQUAL BUTTON STYLES */
+  buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 15,
+    alignItems: 'center',
+    gap: 15, // Space between buttons
   },
-  label: {
-    fontSize: 16,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#333',
+  btnBase: {
+    flex: 1, // This ensures both buttons take exactly 50% of the available width
+    height: 56,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  value: {
-    fontSize: 16,
-    fontFamily: 'Poppins-Regular',
-    color: '#666',
-    flex: 1,
-    textAlign: 'right',
-  },
-  editButton: {
+  primaryActionBtn: {
     backgroundColor: colors.primaryGreen,
-    paddingVertical: 15,
-    borderRadius: 10,
-    alignItems: 'center',
+    shadowColor: colors.primaryGreen,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  innerGlow: {
     width: '100%',
-    marginBottom: 10, // Space between Edit and Logout buttons
-  },
-  editButtonText: {
-    fontSize: 18,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#fff',
-  },
-  logoutButton: {
-    backgroundColor: '#d9534f',
-    paddingVertical: 15,
-    borderRadius: 10,
+    height: '100%',
+    justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
+    borderTopWidth: 1.5,
+    borderTopColor: 'rgba(255,255,255,0.3)',
+    borderRadius: 18,
   },
-  logoutButtonText: {
-    fontSize: 18,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#fff',
+  primaryBtnText: { color: '#FFF', fontSize: 15, fontFamily: 'Poppins-Bold' },
+  
+  secondaryActionBtn: {
+    backgroundColor: '#FFF',
+    borderWidth: 1.5,
+    borderColor: '#FEE2E2', // Very soft red border
   },
-  bottomSpacer: {
-    height: 20,
-  },
+  secondaryBtnText: { color: '#FF5252', fontSize: 15, fontFamily: 'Poppins-Bold' },
 });
 
 export default UserProfile;

@@ -1,19 +1,63 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, Text, Alert, Image, TouchableOpacity } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { View, Text, Alert, Image, TouchableOpacity, Platform, PermissionsAndroid } from 'react-native';
+import { launchCamera } from 'react-native-image-picker';
 import HomeScreen from '../screens/HomeScreen';
 import FavoritesScreen from '../screens/FavouriteScreen';
 import CartScreen from '../screens/CartScreen';
 import UserProfile from '../screens/UserProfile';
+import EditProfileScreen from '../screens/EditProfileScreen';
 import CustomTabBar from '../components/CustomTabBar';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 const PlaceholderScreen = () => (
   <View style={{ flex: 1, backgroundColor: 'white' }} />
+  
 );
 
+// Create a nested stack for UserProfile tab
+const UserProfileStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: true }}>
+      <Stack.Screen name="UserProfileMain" component={UserProfile} options={{ headerShown: false }}/>
+      <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  );
+};
+
 const MainTabNavigator = () => {
+  // Camera options
+  const cameraOptions = {
+    mediaType: 'photo',
+    saveToPhotos: true,
+    quality: 0.8,
+  };
+
+  const requestCameraPermission = async () => {
+    if (Platform.OS !== 'android') return true;
+    const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
+    return result === PermissionsAndroid.RESULTS.GRANTED;
+  };
+
+  const handleOpenCamera = async () => {
+    const allowed = await requestCameraPermission();
+    if (!allowed) {
+      Alert.alert('Permission required', 'Enable camera permission to take a photo.');
+      return;
+    }
+    launchCamera(cameraOptions, (response) => {
+      if (response.didCancel) return;
+      if (response.errorCode) {
+        Alert.alert('Camera error', response.errorMessage || 'Failed to open camera');
+        return;
+      }
+      // You can handle captured image in response.assets[0]
+    });
+  };
+
   return (
     <Tab.Navigator
         tabBar={(props) => <CustomTabBar {...props} />}
@@ -59,7 +103,8 @@ const MainTabNavigator = () => {
         listeners={{
             tabPress: (e) => {
                 e.preventDefault();
-                Alert.alert("Primary Action", "This feature is coming soon!");
+                // Open camera on primary tab press
+                handleOpenCamera();
             },
         }}
       />
@@ -70,9 +115,14 @@ const MainTabNavigator = () => {
       />
       <Tab.Screen 
         name="UserProfile" 
-        component={UserProfile} 
+        component={UserProfileStack}
         options={{ title: 'User Profile' }}
       />
+        {/* <Tab.Screen
+          name="EditProfileScreen"
+          component={EditProfileScreen}
+          options={{ title: 'Edit Profile' }}
+        /> */}
     </Tab.Navigator>
   );
 };

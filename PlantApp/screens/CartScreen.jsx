@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -8,21 +8,30 @@ import {
   Alert,
   Image,
   ScrollView,
+  ActivityIndicator,
+  StatusBar,
+  Dimensions,
+  Platform
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import API_BASE_URL from '../apiConfig';
 import colors from '../utils/colors';
-import ConfirmationModal from '../components/Modal'; // Adjust path as needed
+import ConfirmationModal from '../components/Modal';
 import ToastManager from '../components/Toast/ToastManager';
+
+const { width } = Dimensions.get('window');
 
 const CartScreen = () => {
   const navigation = useNavigation();
   const [cartItems, setCartItems] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [loading, setLoading] = useState(false);
   const shipping = 'Free';
+
+  // --- LOGIC SECTION ---
 
   const getCartItemByUserId = async () => {
     try {
@@ -33,12 +42,13 @@ const CartScreen = () => {
         return;
       }
 
-      const response = await axios.get(
-        `${API_BASE_URL}api/get_cart_items/${userId}`,
-      );
+      setLoading(true);
+      const response = await axios.get(`${API_BASE_URL}api/get_cart_items/${userId}`);
+
       const transformedItems = response.data.map(item => ({
         id: item._id,
-        name: item.product_name,
+        commonName: item.commonName,
+        scientificName: item.scientificName,
         quantity: item.cart_count,
         price: parseFloat(item.price) || 0,
         image: item.image_url || 'https://via.placeholder.com/80',
@@ -48,435 +58,288 @@ const CartScreen = () => {
       setCartItems(transformedItems);
     } catch (error) {
       setCartItems([]);
-      // console.error('Error fetching cart items:', error);
-      // Alert.alert('Error', 'Failed to fetch cart items.');
+    } finally {
+      setLoading(false);
     }
   };
 
   const updateCartItem = async (userId, productId, cartCount, productName) => {
     try {
       if (!userId) {
-        ToastManager.show({
-          type: 'error',
-          message: 'User ID not found. Please log in.',
-          duration: 3000,
-        })
+        ToastManager.show({ type: 'error', message: 'User ID not found.', duration: 3000 });
         return false;
       }
+      setLoading(true);
       const payload = { userId, product_id: productId, cartCount };
-      const response = await axios.post(`${API_BASE_URL}api/update_cart`, payload);
-      console.log('Cart item updated:', response.data);
+      await axios.post(`${API_BASE_URL}api/update_cart`, payload);
+
       ToastManager.show({
         type: 'success',
-        message: cartCount === 0
-          ? `Item removed from cart: ${productName}`
-          : `Item updated in cart: ${productName} (${cartCount})`,
-        duration: 3000,
+        message: cartCount === 0 ? `Removed: ${productName}` : `Updated: ${productName}`,
+        duration: 2000,
       });
       return true;
     } catch (error) {
-      console.error('Error updating cart item:', error);
-      ToastManager.show({
-        type: 'error',
-        message: 'Failed to update cart. Please try again.',
-        duration: 3000,
-      });
+      ToastManager.show({ type: 'error', message: 'Failed to update cart.', duration: 3000 });
       return false;
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    // Alert.alert('Cart', 'This is a demo cart screen. No items will be added.');
-    getCartItemByUserId();
-  }, []);
+  useFocusEffect(useCallback(() => { getCartItemByUserId(); }, []));
 
-  const subtotal = cartItems.reduce((sum, item) => {
-    return sum + item.price * item.quantity;
-  }, 0);
-
-  const total = subtotal + (shipping === 'Free' ? 0 : parseFloat(shipping));
+  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const handleIncrease = async id => {
-    const item = cartItems.find(item => item.id === id);
-    if (!item || item.quantity >= 20) {
-      ToastManager.show({
-        type: 'error',
-        message: 'You can add a maximum of 20 items to the cart.',
-        duration: 3000,
-      });
-      return;
-    }
-
-    const newCount = item.quantity + 1;
+    const item = cartItems.find(i => i.id === id);
+    if (!item || item.quantity >= 20) return;
     const userId = await AsyncStorage.getItem('userId');
-    const success = await updateCartItem(userId, item.productId, newCount, item.name);
-
-    if (success) {
-      await getCartItemByUserId();
-    }
+    const success = await updateCartItem(userId, item.productId, item.quantity + 1, item.name);
+    if (success) getCartItemByUserId();
   };
 
   const handleDecrease = async id => {
-    const item = cartItems.find(item => item.id === id);
+    const item = cartItems.find(i => i.id === id);
     if (!item) return;
-
-    const newCount = item.quantity - 1;
     const userId = await AsyncStorage.getItem('userId');
-    let success;
-
-    if (newCount === 0) {
-      success = await updateCartItem(userId, item.productId, 0, item.name);
-      if (success) {
-        setCartItems(cartItems.filter(cartItem => cartItem.id !== id));
-        await getCartItemByUserId();
-      }
-    } else {
-      success = await updateCartItem(userId, item.productId, newCount, item.name);
-      if (success) {
-        await getCartItemByUserId();
-      }
-    }
+    const newCount = item.quantity - 1;
+    if (newCount === 0) { handleRemove(item); return; }
+    const success = await updateCartItem(userId, item.productId, newCount, item.name);
+    if (success) getCartItemByUserId();
   };
 
-  const handleRemove = id => {
-    const item = cartItems.find(item => item.id === id);
-    if (!item) return;
-
-    setItemToDelete(item);
-    setModalVisible(true);
-  };
+  const handleRemove = item => { setItemToDelete(item); setModalVisible(true); };
 
   const confirmRemove = async () => {
     if (!itemToDelete) return;
-
     const userId = await AsyncStorage.getItem('userId');
-    const success = await updateCartItem(userId, itemToDelete.productId, 0, itemToDelete.name);
-
-    if (success) {
-      await getCartItemByUserId();
-    }
-
+    await updateCartItem(userId, itemToDelete.productId, 0, itemToDelete.name);
     setModalVisible(false);
     setItemToDelete(null);
+    getCartItemByUserId();
   };
 
-  const cancelRemove = () => {
-    setModalVisible(false);
-    setItemToDelete(null);
-  };
+  // --- UI SECTION ---
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Fixed Header */}
-      {/* <View style={styles.headerContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}>
-          <Image
-            source={require('../assets/back_arrow_icon.png')}
-            style={styles.headerIcon}
-          />
-        </TouchableOpacity>
-        <Text style={styles.header}>My Cart</Text>
-      </View> */}
-
-      {/* Scrollable Content */}
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}>
-        {cartItems.length === 0 ? (
-          <View style={styles.emptyCartContainer}>
-            <Image
-              source={require('../assets/cart_empty.png')}
-              style={styles.emptyCartImage}
-            />
-            <Text style={styles.emptyCartText}>Your Cart is Empty</Text>
-            <TouchableOpacity
-                      onPress={() => navigation.navigate('Home')}
-                      style={styles.emptyButton}>
-                      <Text style={styles.cartButtonText}>Shop Now</Text>
-                    </TouchableOpacity>
-          </View>
-        ) : (
-          <>
-            {cartItems.map(item => (
-              <View key={item.id} style={styles.cartItem}>
-                <Image source={{ uri: item.image }} style={styles.itemImage} />
-                <View style={styles.itemDetails}>
-                  <Text style={styles.itemName}>{item.name}</Text>
-                  <View style={styles.cartControl}>
-                    <TouchableOpacity
-                      onPress={() => handleDecrease(item.id)}
-                      style={styles.cartButton}>
-                      <Text style={styles.cartButtonText}>-</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.cartCount}>{item.quantity}</Text>
-                    <TouchableOpacity
-                      onPress={() => handleIncrease(item.id)}
-                      style={styles.cartButton}>
-                      <Text style={styles.cartButtonText}>+</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View style={styles.itemActions}>
-                  <TouchableOpacity
-                    onPress={() => handleRemove(item.id)}
-                    style={styles.removeButton}>
-                    <Image
-                      source={require('../assets/delete_icon.png')}
-                      style={styles.deleteIcon}
-                    />
-                  </TouchableOpacity>
-                  <View style={styles.priceDetails}>
-                    <Text style={styles.smallText}>
-                      {item.quantity} × ₹{item.price.toFixed(2)} =
-                    </Text>
-                    <Text style={styles.totalPrice}>
-                      ₹{(item.price * item.quantity).toFixed(2)}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            ))}
-
-            <View style={styles.summary}>
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>
-                  Sub Total ({cartItems.length} items)
-                </Text>
-                <Text style={styles.summaryValue}>₹{subtotal.toFixed(2)}</Text>
-              </View>
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>Shipping</Text>
-                <Text style={styles.shipping}>{shipping}</Text>
-              </View>
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>Total Price</Text>
-                <Text style={styles.summaryValue}>₹{total.toFixed(2)}</Text>
-              </View>
+      <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+      
+      <View style={{ flex: 1 }}>
+        <ScrollView
+          style={styles.scrollView}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
+          {cartItems.length === 0 ? (
+            <View style={styles.emptyCartContainer}>
+              <Image source={require('../assets/cart_empty.png')} style={styles.emptyCartImage} />
+              <Text style={styles.emptyCartText}>Your Cart is Empty</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Home')}
+                style={[styles.actionBtn, styles.primaryBtn, { marginTop: 30, width: width * 0.6 }]}
+              >
+                <Text style={styles.primaryBtnText}>Start Shopping</Text>
+              </TouchableOpacity>
             </View>
-          </>
-        )}
+          ) : (
+            <>
+              {cartItems.map(item => (
+                <View key={item.id} style={styles.cartItemCard}>
+                  <Image source={{ uri: item.image }} style={styles.itemImage} />
 
-        <View style={styles.bottomSpacer} />
-      </ScrollView>
+                  <View style={styles.itemDetails}>
+                    <Text style={styles.itemName} numberOfLines={1}>{item.commonName}</Text>
+                    <Text style={styles.scientificName}>{item.scientificName}</Text>
 
-      {/* Fixed Checkout Button (Hidden when cart is empty) */}
+                    <View style={styles.cartControl}>
+                      <TouchableOpacity onPress={() => handleDecrease(item.id)} style={styles.qBtn}>
+                        <Text style={styles.qBtnText}>−</Text>
+                      </TouchableOpacity>
+                      <Text style={styles.cartCountText}>{item.quantity}</Text>
+                      <TouchableOpacity onPress={() => handleIncrease(item.id)} style={styles.qBtn}>
+                        <Text style={styles.qBtnText}>+</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+
+                  <View style={styles.itemActions}>
+                    <TouchableOpacity onPress={() => handleRemove(item)} style={styles.deleteBtn}>
+                      <Image source={require('../assets/delete_icon.png')} style={styles.deleteIcon} />
+                    </TouchableOpacity>
+                    <Text style={styles.itemPriceText}>₹{(item.price * item.quantity).toFixed(0)}</Text>
+                  </View>
+                </View>
+              ))}
+
+              <View style={styles.infoCard}>
+                <Text style={styles.cardHeading}>Order Summary</Text>
+                <View style={styles.infoRow}>
+                  <Text style={styles.infoLabel}>Subtotal</Text>
+                  <Text style={styles.infoValue}>₹{subtotal.toFixed(2)}</Text>
+                </View>
+                <View style={styles.divider} />
+                <View style={styles.infoRow}>
+                  <Text style={styles.infoLabel}>Shipping</Text>
+                  <Text style={[styles.infoValue, { color: colors.primaryGreen }]}>{shipping}</Text>
+                </View>
+                <View style={styles.divider} />
+                <View style={styles.infoRow}>
+                  <Text style={[styles.infoLabel, { fontFamily: 'Poppins-Bold', color: '#333' }]}>Total Amount</Text>
+                  <Text style={[styles.infoValue, { fontSize: 18, color: colors.primaryGreen }]}>
+                    ₹{subtotal.toFixed(2)}
+                  </Text>
+                </View>
+              </View>
+              
+              {/* Extra spacer to clear the footer bar */}
+              <View style={{ height: 50 }} />
+            </>
+          )}
+        </ScrollView>
+      </View>
+
+      {/* FLOATING FOOTER - Always on top */}
       {cartItems.length > 0 && (
-        <View style={styles.checkoutContainer}>
-          <TouchableOpacity style={styles.checkoutButton}>
-            <Text style={styles.checkoutText}>Checkout</Text>
+        <View style={styles.checkoutBar}>
+          <TouchableOpacity 
+            activeOpacity={0.8}
+            style={[styles.actionBtn, styles.primaryBtn]} 
+            onPress={() => Alert.alert('Checkout', 'Proceeding to checkout...')}
+          >
+            <Text style={styles.primaryBtnText}>Proceed to Checkout</Text>
           </TouchableOpacity>
         </View>
       )}
 
-      {/* Confirmation Modal */}
       <ConfirmationModal
         visible={modalVisible}
         title="Confirm Removal"
-        message={`Are you sure you want to remove "${itemToDelete?.name}" from the cart?`}
+        message={`Remove "${itemToDelete?.name}" from cart?`}
         onConfirm={confirmRemove}
-        onCancel={cancelRemove}
+        onCancel={() => setModalVisible(false)}
       />
+
+      {loading && (
+        <View style={styles.loaderOverlay}>
+          <ActivityIndicator size="large" color={colors.primaryGreen} />
+        </View>
+      )}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
+  container: { flex: 1, backgroundColor: '#FFFFFF' },
+  scrollView: { flex: 1 },
+  scrollContent: { 
+    paddingHorizontal: 20, 
+    paddingTop: 20, 
+    paddingBottom: 150 // High padding ensures content is never hidden under the bar
   },
-  headerContainer: {
+
+  cartItemCard: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1,
-  },
-  backButton: {
-    position: 'absolute',
-    left: 20,
-  },
-  headerIcon: {
-    width: 30,
-    height: 30,
-  },
-  deleteIcon: {
-    width: 25,
-    height: 25,
-  },
-  header: {
-    fontSize: 24,
-    fontFamily: 'Poppins-Bold',
-    color: '#333',
-  },
-  scrollView: {
-    flex: 1,
-    marginTop: 20,
-    marginBottom: 80,
-  },
-  scrollContent: {
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-    alignItems: 'center', // Center content for empty cart message
-  },
-  emptyCartContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  emptyCartImage: {
-    width: 300,
-    height: 400,
-  },
-  emptyCartText: {
-    fontSize: 24,
-    fontFamily: 'Poppins-SemiBold',
-    color: colors.primaryGreen,
-    textAlign: 'center',
-  },
-  cartItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    padding: 10,
-    borderRadius: 10,
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    width: '100%',
-  },
-  itemImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 10,
-    marginRight: 10,
-  },
-  itemDetails: {
-    flex: 1,
-  },
-  itemName: {
-    fontSize: 20,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#333',
+    backgroundColor: '#FFF',
+    borderRadius: 20,
+    padding: 15,
     marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#F0F0F0',
   },
+  itemImage: { width: 85, height: 85, borderRadius: 15, backgroundColor: '#F9F9F9' },
+  itemDetails: { flex: 1, marginLeft: 15, justifyContent: 'center' },
+  itemName: { fontSize: 16, fontFamily: 'Poppins-Bold', color: '#333' },
+  scientificName: { fontSize: 12, fontFamily: 'Poppins-Regular', fontStyle: 'italic', color: '#AAA', marginBottom: 8 },
+  
   cartControl: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#d1f7e3',
-    width: '50%',
+    backgroundColor: '#F7F7F7',
     borderRadius: 10,
+    padding: 3,
+    alignSelf: 'flex-start',
   },
-  cartButton: {
-    backgroundColor: '#28a745',
-    width: 30,
-    height: 30,
-    borderRadius: 10,
+  qBtn: {
+    width: 28,
+    height: 28,
+    backgroundColor: colors.primaryGreen,
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  cartButtonText: {
-    fontSize: 16,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#fff',
-  },
-  emptyButton: {
-    backgroundColor: colors.primaryGreen,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    marginTop: 20,
-  },
-  cartCount: {
-    fontSize: 14,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#000',
-    width: 30,
-    textAlign: 'center',
-    marginHorizontal: 3,
-  },
-  itemActions: {
-    alignItems: 'flex-end',
-  },
-  removeButton: {
-    paddingVertical: 2,
-    paddingHorizontal: 5,
-    borderRadius: 5,
-    marginBottom: 5,
-  },
-  priceDetails: {
-    alignItems: 'flex-end',
-  },
-  smallText: {
-    fontSize: 14,
-    fontFamily: 'Poppins-Regular',
-    color: '#666',
-    marginBottom: 5,
-  },
-  totalPrice: {
-    fontSize: 24,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#28a745',
-  },
-  summary: {
+  qBtnText: { color: '#FFF', fontSize: 18, fontWeight: 'bold' },
+  cartCountText: { marginHorizontal: 12, fontFamily: 'Poppins-SemiBold', fontSize: 14, color: '#333' },
+
+  itemActions: { alignItems: 'flex-end', justifyContent: 'space-between' },
+  deleteBtn: { padding: 5 },
+  deleteIcon: { width: 18, height: 18, tintColor: '#FF6B6B' },
+  itemPriceText: { fontSize: 16, fontFamily: 'Poppins-Bold', color: colors.primaryGreen },
+
+  infoCard: {
+    backgroundColor: '#FAFAFA',
+    borderRadius: 20,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: '#EEEEEE',
+    marginTop: 10,
     marginBottom: 20,
-    width: '100%',
   },
-  summaryRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
+  cardHeading: { 
+    fontSize: 11, 
+    fontFamily: 'Poppins-Bold', 
+    color: colors.primaryGreen, 
+    letterSpacing: 1.2, 
+    textTransform: 'uppercase', 
+    marginBottom: 15 
   },
-  summaryLabel: {
-    fontSize: 16,
-    fontFamily: 'Poppins-Regular',
-    color: '#333',
-  },
-  summaryValue: {
-    fontSize: 16,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#333',
-  },
-  shipping: {
-    fontSize: 16,
-    fontFamily: 'Poppins-SemiBold',
-    color: colors.primaryGreen,
-  },
-  checkoutContainer: {
+  infoRow: { flexDirection: 'row', justifyContent: 'space-between', marginVertical: 4 },
+  infoLabel: { fontSize: 12, fontFamily: 'Poppins-Regular', color: '#888' },
+  infoValue: { fontSize: 14, fontFamily: 'Poppins-SemiBold', color: '#333' },
+  divider: { height: 1, backgroundColor: '#EEEEEE', marginVertical: 8 },
+
+  checkoutBar: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 90,
     left: 0,
     right: 0,
-    padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFF',
+    paddingHorizontal: 20,
+    paddingTop: 15,
+    paddingBottom: Platform.OS === 'ios' ? 35 : 20, // Better safe-area handling
     borderTopWidth: 1,
-    borderTopColor: '#ddd',
+    borderTopColor: '#F0F0F0',
+    zIndex: 999,      // Overlays all other content
+    // elevation: 10,    // Android equivalent of zIndex
   },
-  checkoutButton: {
-    backgroundColor: '#28a745',
-    paddingVertical: 15,
-    borderRadius: 10,
+
+  actionBtn: {
+    height: 54,
+    borderRadius: 16,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  checkoutText: {
-    color: '#fff',
-    fontSize: 18,
-    fontFamily: 'Poppins-SemiBold',
-    fontWeight: 'bold',
+  primaryBtn: {
+    backgroundColor: colors.primaryGreen,
+    width: '100%',
   },
-  bottomSpacer: {
-    height: 20,
+  primaryBtnText: {
+    color: '#FFF',
+    fontSize: 15,
+    fontFamily: 'Poppins-Bold',
+  },
+
+  emptyCartContainer: { alignItems: 'center', justifyContent: 'center', marginTop: 50 },
+  emptyCartImage: { width: 220, height: 220, resizeMode: 'contain', marginBottom: 20 },
+  emptyCartText: { fontSize: 18, fontFamily: 'Poppins-Bold', color: '#333' },
+
+  loaderOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(255,255,255,0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000
   },
 });
 

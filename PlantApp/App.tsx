@@ -33,6 +33,7 @@ import EditProfileScreen from './screens/EditProfileScreen';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StatusBar} from 'react-native';
 import SplashScreen from './screens/SplashScreen';
+import CartScreen from './screens/CartScreen';
 
 const Stack = createStackNavigator();
 
@@ -128,6 +129,11 @@ function App() {
               name="SplashScreen"
               component={SplashScreen}
               options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="CartScreen"
+              component={CartScreen}
+              options={{headerTitle: 'Your Cart'}}
             />
           </Stack.Navigator>
         </NavigationContainer>
