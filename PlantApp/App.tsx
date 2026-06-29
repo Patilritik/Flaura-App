@@ -101,7 +101,7 @@ function App() {
             />
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen
-              name="Home"
+              name="Main"
               component={MainTabNavigator}
               options={{headerShown: false}}
             />

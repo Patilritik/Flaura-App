@@ -40,6 +40,8 @@ const UserProfile = () => {
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('userId');
+    await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('email');
     ToastManager.show({ type: 'success', message: 'Logged out', duration: 2000 });
     navigation.replace('Login');
   };

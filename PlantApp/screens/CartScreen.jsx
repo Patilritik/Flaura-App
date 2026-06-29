@@ -137,7 +137,7 @@ const CartScreen = () => {
               <Image source={require('../assets/cart_empty.png')} style={styles.emptyCartImage} />
               <Text style={styles.emptyCartText}>Your Cart is Empty</Text>
               <TouchableOpacity
-                onPress={() => navigation.navigate('Home')}
+                onPress={() => navigation.navigate('Main')}
                 style={[styles.actionBtn, styles.primaryBtn, { marginTop: 30, width: width * 0.6 }]}
               >
                 <Text style={styles.primaryBtnText}>Start Shopping</Text>
@@ -216,7 +216,7 @@ const CartScreen = () => {
       <ConfirmationModal
         visible={modalVisible}
         title="Confirm Removal"
-        message={`Remove "${itemToDelete?.name}" from cart?`}
+        message={`Remove "${itemToDelete?.commonName}" from cart?`}
         onConfirm={confirmRemove}
         onCancel={() => setModalVisible(false)}
       />

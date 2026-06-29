@@ -16,13 +16,22 @@ const SplashScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const token = AsyncStorage.getItem('userToken');
-      if (token) {
-        navigation.replace('Home'); // ya HomeScreen
-      } else {  
-      navigation.replace('Login'); // ya LoginScreen
+    const checkToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        if (token) {
+          navigation.replace('Main');
+        } else {
+          navigation.replace('Login');
+        }
+      } catch (error) {
+        console.error('Error checking token:', error);
+        navigation.replace('Login');
       }
+    };
+
+    const timer = setTimeout(() => {
+      checkToken();
     }, 5000);
 
     return () => clearTimeout(timer);

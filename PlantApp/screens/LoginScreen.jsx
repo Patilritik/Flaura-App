@@ -153,7 +153,7 @@ const LoginScreen = ({ navigation }) => {
       await AsyncStorage.setItem('token', response?.data?.token);
       await AsyncStorage.setItem('email', response?.data?.email);
       await AsyncStorage.setItem('userId', response?.data?.userId);
-      navigation.navigate('Home');
+      navigation.navigate('Main');
 
     } catch (error) {
       console.log("Login error:", error?.response?.data);
