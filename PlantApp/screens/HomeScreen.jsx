@@ -126,8 +126,15 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    getBannerImages();
-    getPlantsInfo();
+    const loadHomeData = async () => {
+      const token = await AsyncStorage.getItem('token');
+      const userId = await AsyncStorage.getItem('userId');
+      if (token && userId) {
+        getBannerImages();
+        getPlantsInfo();
+      }
+    };
+    loadHomeData();
   }, []);
 
   useEffect(() => {

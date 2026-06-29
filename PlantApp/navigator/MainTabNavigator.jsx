@@ -9,6 +9,7 @@ import CartScreen from '../screens/CartScreen';
 import UserProfile from '../screens/UserProfile';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import CustomTabBar from '../components/CustomTabBar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -28,7 +29,30 @@ const UserProfileStack = () => {
   );
 };
 
-const MainTabNavigator = () => {
+const MainTabNavigator = ({ navigation }) => {
+  // Check if user is authenticated, otherwise redirect to Login
+  React.useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const userId = await AsyncStorage.getItem('userId');
+        if (!token || !userId) {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Login' }],
+          });
+        }
+      } catch (error) {
+        console.error('Error validating auth token:', error);
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Login' }],
+        });
+      }
+    };
+    checkAuth();
+  }, [navigation]);
+
   // Camera options
   const cameraOptions = {
     mediaType: 'photo',

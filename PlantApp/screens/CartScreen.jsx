@@ -73,11 +73,13 @@ const CartScreen = () => {
       const payload = { userId, product_id: productId, cartCount };
       await axios.post(`${API_BASE_URL}api/update_cart`, payload);
 
-      ToastManager.show({
-        type: 'success',
-        message: cartCount === 0 ? `Removed: ${productName}` : `Updated: ${productName}`,
-        duration: 2000,
-      });
+      if (cartCount === 0) {
+        ToastManager.show({
+          type: 'success',
+          message: `Removed: ${itemToDelete?.commonName}`,
+          duration: 1500,
+        });
+      }
       return true;
     } catch (error) {
       ToastManager.show({ type: 'error', message: 'Failed to update cart.', duration: 3000 });
@@ -95,7 +97,7 @@ const CartScreen = () => {
     const item = cartItems.find(i => i.id === id);
     if (!item || item.quantity >= 20) return;
     const userId = await AsyncStorage.getItem('userId');
-    const success = await updateCartItem(userId, item.productId, item.quantity + 1, item.name);
+    const success = await updateCartItem(userId, item.productId, item.quantity + 1, item.commonName);
     if (success) getCartItemByUserId();
   };
 
@@ -105,7 +107,7 @@ const CartScreen = () => {
     const userId = await AsyncStorage.getItem('userId');
     const newCount = item.quantity - 1;
     if (newCount === 0) { handleRemove(item); return; }
-    const success = await updateCartItem(userId, item.productId, newCount, item.name);
+    const success = await updateCartItem(userId, item.productId, newCount, item.commonName);
     if (success) getCartItemByUserId();
   };
 

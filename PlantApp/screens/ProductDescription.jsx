@@ -91,18 +91,26 @@ const ProductDescription = ({route, navigation}) => {
     checkIfFavorite();
   }, [product._id, checkIfFavorite]);
 
-  const updateCartItem = async (userId, productId, cartCount) => {
+  const updateCartItem = async (userId, productId, cartCount, isInitialAdd = false) => {
     try {
       if (!userId) {
         ToastManager.show({ type: 'error', message: 'User ID not found. Please log in.', duration: 3000 });
         return;
       }
       await axios.post(`${API_BASE_URL}api/update_cart`, {userId, product_id: productId, cartCount});
-      ToastManager.show({
-        type: 'success',
-        message: cartCount === 0 ? `Item removed from cart` : `Cart updated: ${cartCount} items`,
-        duration: 2000,
-      });
+      if (cartCount === 0) {
+        ToastManager.show({
+          type: 'success',
+          message: `Item removed from cart`,
+          duration: 1500,
+        });
+      } else if (isInitialAdd) {
+        ToastManager.show({
+          type: 'success',
+          message: `Added to cart!`,
+          duration: 1500,
+        });
+      }
     } catch (error) {
       console.error('Error updating cart item:', error);
     }
@@ -113,7 +121,7 @@ const ProductDescription = ({route, navigation}) => {
       const newCount = cartCount + 1;
       setCartCount(newCount);
       const userId = await AsyncStorage.getItem('userId');
-      updateCartItem(userId, product._id, newCount);
+      updateCartItem(userId, product._id, newCount, cartCount === 0);
     } else {
       ToastManager.show({type: 'error', message: 'Maximum 20 items allowed'});
     }
@@ -124,7 +132,7 @@ const ProductDescription = ({route, navigation}) => {
       const newCount = cartCount - 1;
       setCartCount(newCount);
       const userId = await AsyncStorage.getItem('userId');
-      updateCartItem(userId, product._id, newCount);
+      updateCartItem(userId, product._id, newCount, false);
     }
   };
 
