@@ -57,7 +57,10 @@ const MainTabNavigator = ({ navigation }) => {
   const cameraOptions = {
     mediaType: 'photo',
     saveToPhotos: true,
-    quality: 0.8,
+    quality: 0.7,
+    maxWidth: 1024,
+    maxHeight: 1024,
+    includeBase64: true,
   };
 
   const requestCameraPermission = async () => {
@@ -78,7 +81,13 @@ const MainTabNavigator = ({ navigation }) => {
         Alert.alert('Camera error', response.errorMessage || 'Failed to open camera');
         return;
       }
-      // You can handle captured image in response.assets[0]
+      if (response.assets && response.assets.length > 0) {
+        const capturedImage = response.assets[0];
+        navigation.navigate('PlantScanner', {
+          imageUri: capturedImage.uri,
+          imageBase64: capturedImage.base64 || null,
+        });
+      }
     });
   };
 

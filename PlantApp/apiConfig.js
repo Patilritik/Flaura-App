@@ -6,4 +6,9 @@
 
 const API_BASE_URL = 'https://flaura-app-1.onrender.com/';
 
-export default API_BASE_URL; 
+// Enter your Gemini API key here from Google AI Studio. 
+// If left blank, you can also enter it directly within the app on the scanning screen.
+const GEMINI_API_KEY = 'AIzaSyBhOShN5Maj8otgoQgUesMrpwJol3yJVmM';
+
+export default API_BASE_URL;
+export { GEMINI_API_KEY };

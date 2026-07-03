@@ -34,6 +34,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StatusBar} from 'react-native';
 import SplashScreen from './screens/SplashScreen';
 import CartScreen from './screens/CartScreen';
+import PlantScannerScreen from './screens/PlantScannerScreen';
 
 const Stack = createStackNavigator();
 
@@ -134,6 +135,11 @@ function App() {
               name="CartScreen"
               component={CartScreen}
               options={{headerTitle: 'Your Cart'}}
+            />
+            <Stack.Screen
+              name="PlantScanner"
+              component={PlantScannerScreen}
+              options={{headerTitle: 'Plant Scanner'}}
             />
           </Stack.Navigator>
         </NavigationContainer>
