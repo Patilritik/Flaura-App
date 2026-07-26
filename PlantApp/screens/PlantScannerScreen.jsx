@@ -19,7 +19,8 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import colors from '../utils/colors';
-import { GEMINI_API_KEY } from '../apiConfig';
+import API_BASE_URL, { GEMINI_API_KEY } from '../apiConfig';
+
 
 const { width } = Dimensions.get('window');
 
@@ -47,7 +48,7 @@ export default function PlantScannerScreen({ route, navigation }) {
     "Generating fun facts..."
   ];
 
-  // Initialize and check for API Key
+  // Initialize and check for API Key (optional local key fallback)
   useEffect(() => {
     const initializeKey = async () => {
       if (GEMINI_API_KEY && GEMINI_API_KEY.trim() !== '') {
@@ -56,8 +57,6 @@ export default function PlantScannerScreen({ route, navigation }) {
         const storedKey = await AsyncStorage.getItem('user_gemini_api_key');
         if (storedKey) {
           setApiKey(storedKey);
-        } else {
-          setShowKeyModal(true);
         }
       }
     };
@@ -107,14 +106,13 @@ export default function PlantScannerScreen({ route, navigation }) {
         }
         if (activeKey) {
           setApiKey(activeKey);
-          identifyPlant(routeBase64, activeKey);
-        } else {
-          setShowKeyModal(true);
         }
+        identifyPlant(routeBase64, activeKey);
       };
       runInitialScan();
     }
   }, [route.params]);
+
 
   // Scanning laser animation
   useEffect(() => {
@@ -185,26 +183,26 @@ export default function PlantScannerScreen({ route, navigation }) {
     }
   };
 
-  // Call Gemini Vision API
+  // Call Gemini Vision API (directly or via backend proxy)
   const identifyPlant = async (base64Content, activeKey) => {
     const keyToUse = activeKey || apiKey;
-    if (!keyToUse) {
-      setShowKeyModal(true);
-      return;
-    }
-
+    
     setLoading(true);
     setErrorMsg(null);
     setPlantData(null);
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${keyToUse}`;
+    const isUsingDirectApi = !!keyToUse;
+    const url = isUsingDirectApi
+      ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${keyToUse}`
+      : `${API_BASE_URL}api/identify-plant`;
 
-    const requestBody = {
-      contents: [
-        {
-          parts: [
+    const requestBody = isUsingDirectApi
+      ? {
+          contents: [
             {
-              text: `Identify the plant or tree in this image. 
+              parts: [
+                {
+                  text: `Identify the plant or tree in this image. 
 Respond ONLY with a valid raw JSON object, without any Markdown syntax, code block formatting (do NOT include \`\`\`json or \`\`\`), or additional commentary.
 The JSON object MUST strictly conform to this structure:
 {
@@ -229,20 +227,21 @@ If the image does not show a plant, tree, flower, or shrub clearly, respond with
 {
   "isPlant": false
 }`
-            },
-            {
-              inlineData: {
-                mimeType: "image/jpeg",
-                data: base64Content
-              }
+                },
+                {
+                  inlineData: {
+                    mimeType: "image/jpeg",
+                    data: base64Content
+                  }
+                }
+              ]
             }
-          ]
+          ],
+          generationConfig: {
+            responseMimeType: "application/json"
+          }
         }
-      ],
-      generationConfig: {
-        responseMimeType: "application/json"
-      }
-    };
+      : { image: base64Content };
 
     try {
       const response = await fetch(url, {
@@ -259,7 +258,9 @@ If the image does not show a plant, tree, flower, or shrub clearly, respond with
         
         try {
           const errorJson = JSON.parse(errorText);
-          if (errorJson?.error?.message) {
+          if (errorJson?.message) {
+            errorMessage = errorJson.message;
+          } else if (errorJson?.error?.message) {
             errorMessage = errorJson.error.message;
           }
         } catch (e) {
@@ -269,7 +270,7 @@ If the image does not show a plant, tree, flower, or shrub clearly, respond with
         }
 
         if (response.status === 400 || response.status === 403) {
-          throw new Error(`Invalid API Key or authorization error: ${errorMessage}`);
+          throw new Error(isUsingDirectApi ? `Invalid API Key or authorization error: ${errorMessage}` : errorMessage);
         }
         if (response.status === 429) {
           throw new Error("Rate limit or quota exceeded. You have made too many requests in a short time. Please wait a minute and try again.");
@@ -325,6 +326,7 @@ If the image does not show a plant, tree, flower, or shrub clearly, respond with
       setLoading(false);
     }
   };
+
 
   // Launch camera
   const handleOpenCamera = () => {

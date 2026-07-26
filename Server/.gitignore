@@ -76,3 +76,6 @@ yarn-error.log
 
 email : wowom16379@linxues.com
 password : Hello@123
+
+# Environment secrets
+.env

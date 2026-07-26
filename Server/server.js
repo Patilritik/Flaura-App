@@ -6,6 +6,7 @@ const authRoutes = require('./Routes/auth'); // Fixed casing: 'Routes' to 'route
 const plantsInfoRoutes = require('./Routes/plantsInfo'); // Fixed casing: 'Routes' to 'routes'
 const bannerImagesRoutes = require('./Routes/bannerImages'); // Fixed casing: 'Routes' to 'routes'
 const CartItemsRoutes = require('./Routes/cart'); // Fixed casing: 'Routes' to 'routes'
+const geminiRoutes = require('./Routes/gemini');
 
 // Load environment variables
 dotenv.config();
@@ -14,7 +15,8 @@ const app = express();
 
 // Middleware
 app.use(cors({ origin: '*' })); // Allow all origins for development
-app.use(express.json()); // Parse JSON bodies
+app.use(express.json({ limit: '10mb' })); // Parse JSON bodies with custom limit
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Connect to MongoDB
 mongoose
@@ -27,6 +29,8 @@ app.use('/api', authRoutes ); // Fixed casing: 'Routes' to 'routes'
 app.use('/api', plantsInfoRoutes);
 app.use('/api', bannerImagesRoutes); // Fixed casing: 'Routes' to 'routes'
 app.use('/api', CartItemsRoutes); // Fixed casing: 'Routes' to 'routes'
+app.use('/api', geminiRoutes);
+
 
 // Start the server
 const PORT = process.env.PORT || 5000;

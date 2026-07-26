@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">PlantApp</string>
+    <!-- <string name="app_name">PlantApp</string> -->
+    <string name="app_name">Flaura APK</string>
 </resources>
