@@ -22,8 +22,8 @@ const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpaci
 const LoginScreen = ({ navigation }) => {
   console.log('LoginScreen Navigation prop:', navigation); // Debug: Check if navigation is defined
 
-  const [email, setEmail] = useState('ritik@gmail.com');
-  const [password, setPassword] = useState('123456');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Animation values

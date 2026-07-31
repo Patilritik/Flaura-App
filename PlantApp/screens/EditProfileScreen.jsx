@@ -42,7 +42,12 @@ const EditProfileScreen = () => {
   const [loading, setLoading] = useState(false);
 
   const handleInputChange = (field, value) => {
-    setFormData({ ...formData, [field]: value });
+    if (field === 'phone') {
+      const cleaned = value.replace(/[^0-9]/g, '').slice(0, 10);
+      setFormData({ ...formData, [field]: cleaned });
+    } else {
+      setFormData({ ...formData, [field]: value });
+    }
   };
 
   const handlePickImage = () => {
@@ -65,6 +70,12 @@ const EditProfileScreen = () => {
   };
 
   const handleSave = async () => {
+    const phoneDigits = formData.phone ? formData.phone.replace(/[^0-9]/g, '') : '';
+    if (phoneDigits.length !== 10) {
+      ToastManager.show({ type: 'error', message: 'Phone number must be exactly 10 digits' });
+      return;
+    }
+
     setLoading(true);
     try {
       const userId = await AsyncStorage.getItem('userId');
@@ -148,6 +159,7 @@ const EditProfileScreen = () => {
               value={formData.phone} 
               onChangeText={(t) => handleInputChange('phone', t)} 
               keyboardType="phone-pad"
+              maxLength={10}
               placeholder="Enter phone number"
             />
 
@@ -181,7 +193,7 @@ const EditProfileScreen = () => {
   );
 };
 
-const InputItem = ({ label, value, onChangeText, placeholder, editable = true, multiline = false, keyboardType = 'default', style }) => (
+const InputItem = ({ label, value, onChangeText, placeholder, editable = true, multiline = false, keyboardType = 'default', maxLength, style }) => (
   <View style={styles.inputWrapper}>
     <Text style={styles.inputLabel}>{label}</Text>
     <TextInput
@@ -192,6 +204,7 @@ const InputItem = ({ label, value, onChangeText, placeholder, editable = true, m
       editable={editable}
       multiline={multiline}
       keyboardType={keyboardType}
+      maxLength={maxLength}
       placeholderTextColor="#BBB"
       // This helps with visibility when the keyboard is open
       onFocus={(e) => {}} 
