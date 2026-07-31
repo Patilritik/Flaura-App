@@ -20,8 +20,8 @@ buildscript {
 
 apply plugin: "com.facebook.react.rootproject"
 
-subprojects { project ->
-    if (project.name != "app") {
-        project.buildDir = "D:/tmp/build/${rootProject.name}/${project.name}"
-    }
-}
+// subprojects { project ->
+//     if (project.name != "app") {
+//         project.buildDir = "D:/tmp/build/${rootProject.name}/${project.name}"
+//     }
+// }
