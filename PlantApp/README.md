@@ -1,104 +1,74 @@
+# Florify 🌱
 
-username : notdemo96_db_user
-password : YyZDlzXft06G0ACA
+**Florify** (formerly Flaura/PlantApp) is a premium, feature-rich React Native mobile application designed for plant enthusiasts. It combines a seamless plant e-commerce store with an interactive AI-powered plant scanner and detailed care guides.
 
-mongodb+srv://notdemo96_db_user:YyZDlzXft06G0ACA@plantapp.r3uhsg6.mongodb.net/
+---
 
+## 🚀 Key Features
 
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+* 🌿 **Curated Plant Catalog:** Browse plants grouped by categories (Indoor, Outdoor, Accessories).
+* 🔍 **Smart Product Search:** Instant search functionality to quickly find specific plants.
+* 📸 **AI Plant Scanner:** Capture leaf photos using the device's camera for instant identification and care advice.
+* 💧 **Interactive Care Guides:** Detailed information on light requirements, watering cycles, soil, and temperature tolerance.
+* 🛒 **Complete Shopping Cart:** Manage items, adjust quantities, and experience a smooth checkout flow.
+* 👤 **User Profiles:** Customize account details, update profile avatars, and securely manage active sessions.
 
-# Getting Started
+---
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## 🛠️ Technology Stack
 
-## Step 1: Start Metro
+* **Frontend:** React Native (v0.79.1) & JavaScript (ES6+)
+* **Navigation:** React Navigation (Stack & Custom Bottom Tabs)
+* **Local Storage:** AsyncStorage (for session persistence)
+* **API Client:** Axios
+* **Backend Database Node:** Hosted MongoDB Instance
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+---
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## 📖 In-Depth Technical Documentation
 
-```sh
-# Using npm
-npm start
+For details regarding system architecture, component folder structure, navigation flows, database schemas, and API documentation, please refer to the detailed guide:
+👉 **[ARCHITECTURE.md](./ARCHITECTURE.md)**
 
-# OR using Yarn
-yarn start
+---
+
+## ⚡ Quick Start Guide
+
+### 1. Prerequisites
+Ensure you have Node.js, Android SDK, and CocoaPods (for iOS) installed.
+
+### 2. Installation
+Install the project dependencies from the root directory:
+```bash
+npm install
 ```
 
-## Step 2: Build and run your app
+### 3. Run on Emulator / Connected Device
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+* **Step 1: Start the Metro Server**
+  ```bash
+  npm start
+  ```
+* **Step 2: Compile & Run on Android**
+  ```bash
+  npm run android
+  ```
+* **Step 3: Compile & Run on iOS (macOS only)**
+  ```bash
+  cd ios && pod install && cd ..
+  npm run ios
+  ```
 
-### Android
+## 🗄️ Database Configuration
 
-```sh
-# Using npm
-npm run android
+To run the backend server, you must set up the database connection via environment variables:
 
-# OR using Yarn
-yarn android
-```
+1. Create a `.env` file inside the `Server/` directory.
+2. Add your MongoDB connection string:
+   ```env
+   MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/database_name
+   PORT=5000
+   ```
 
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+> [!WARNING]
+> Never expose or commit database credentials, connection strings, or passwords directly to Git or markdown files. Always use ignored `.env` files for security.
