@@ -106,6 +106,9 @@ const UserProfile = () => {
               <Text style={styles.secondaryBtnText}>Logout</Text>
             </TouchableOpacity>
           </View>
+          <Text style={styles.brandFooter}>
+            © 2026 Florify. All Rights Reserved.
+          </Text>
         </View>
       </ScrollView>
     </View>
@@ -198,6 +201,14 @@ const styles = StyleSheet.create({
     borderColor: '#FEE2E2', // Very soft red border
   },
   secondaryBtnText: { color: '#FF5252', fontSize: 15, fontFamily: 'Poppins-Bold' },
+  brandFooter: {
+    textAlign: 'center',
+    color: '#BBB',
+    marginTop: 30,
+    marginBottom: 10,
+    fontSize: 12,
+    fontFamily: 'Poppins-Regular',
+  },
 });
 
 export default UserProfile;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,6 +12,7 @@ import {
   SafeAreaView,
   StatusBar,
   ActivityIndicator,
+  Animated,
 } from 'react-native';
 import axios from 'axios';
 import API_BASE_URL from '../apiConfig';
@@ -30,6 +31,9 @@ const HomeScreen = () => {
   const [plantsInfo, setPlantsInfo] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const navigation = useNavigation();
+  const [showBubble, setShowBubble] = useState(false);
+  const bubbleOpacity = useRef(new Animated.Value(0)).current;
+  const bubbleScale = useRef(new Animated.Value(0.3)).current;
 
   // Static map of banner images (if stored locally)
   const bannerImageMap = {
@@ -125,6 +129,48 @@ const HomeScreen = () => {
     navigation.navigate('ProductDescription', { product });
   };
 
+  const logoPressTimeoutRef = useRef(null);
+
+  const handleLogoPress = () => {
+    if (logoPressTimeoutRef.current) {
+      clearTimeout(logoPressTimeoutRef.current);
+    }
+
+    setShowBubble(true);
+    
+    Animated.parallel([
+      Animated.timing(bubbleOpacity, {
+        toValue: 1,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+      Animated.spring(bubbleScale, {
+        toValue: 1,
+        friction: 6,
+        tension: 40,
+        useNativeDriver: true,
+      })
+    ]).start();
+
+    logoPressTimeoutRef.current = setTimeout(() => {
+      Animated.parallel([
+        Animated.timing(bubbleOpacity, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+        Animated.timing(bubbleScale, {
+          toValue: 0.3,
+          duration: 200,
+          useNativeDriver: true,
+        })
+      ]).start(() => {
+        setShowBubble(false);
+        logoPressTimeoutRef.current = null;
+      });
+    }, 3000);
+  };
+
   useEffect(() => {
     const loadHomeData = async () => {
       const token = await AsyncStorage.getItem('token');
@@ -135,6 +181,14 @@ const HomeScreen = () => {
       }
     };
     loadHomeData();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (logoPressTimeoutRef.current) {
+        clearTimeout(logoPressTimeoutRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -152,13 +206,31 @@ const HomeScreen = () => {
       case 'search':
         return (
           <View style={styles.searchContainer}>
-            <View style={styles.searchHeader}>
-              <Text style={styles.searchLabel}>What are you looking for?</Text>
+            <View style={styles.brandHeader}>
+              <View style={{ position: 'relative', zIndex: 999 }}>
+                <TouchableOpacity onPress={handleLogoPress} activeOpacity={0.7}>
+                  <Image source={require('../assets/app_logo.png')} style={styles.brandLogo} />
+                </TouchableOpacity>
+                {showBubble && (
+                  <Animated.View 
+                    style={[
+                      styles.speechBubble, 
+                      { 
+                        opacity: bubbleOpacity, 
+                        transform: [{ scale: bubbleScale }] 
+                      }
+                    ]}
+                  >
+                    <Text style={styles.speechText}>Hi, I'm Florify! </Text>
+                    <View style={styles.bubbleArrow} />
+                  </Animated.View>
+                )}
+              </View>
               <TouchableOpacity onPress={() => navigation.navigate('UserProfile')}>
-              <Image source={require('../assets/account_icon.png')} style={{ width: 50, height: 50 , tintColor : '#000' }} />
+                <Image source={require('../assets/account_icon.png')} style={styles.profileIcon} />
               </TouchableOpacity>
-              {/* <Image source={require('../assets/plant_notification_icon.png')} style={{ width: 50, height: 50 }} /> */}
             </View>
+            <Text style={styles.searchLabel}>What are you looking for?</Text>
             {/* Search input with search icon */}
             <View style={styles.inputWrapper}>
               <Image source={require('../assets/search_icon.png')} style={styles.inputIcon} />
@@ -291,6 +363,22 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight,
     marginBottom: 20,
   },
+  brandHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  brandLogo: {
+    width: 45,
+    height: 45,
+    resizeMode: 'contain',
+  },
+  profileIcon: {
+    width: 35,
+    height: 35,
+    tintColor: '#000',
+  },
   searchHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -299,7 +387,7 @@ const styles = StyleSheet.create({
   },
   searchLabel: {
     fontSize: 24,
-    width: '50%',
+    width: '100%',
     marginBottom: 5,
     fontFamily: 'Poppins-Bold',
   },
@@ -407,7 +495,43 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
     color: colors.primaryGreen,
   },
-
+  speechBubble: {
+    position: 'absolute',
+    top: 52,
+    left: 0,
+    backgroundColor: '#E8F5E9', // Soft pastel mint green
+    borderColor: '#C8E6C9',     // Mild border matching the green theme
+    borderWidth: 1,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,           // More rounded for cloud-like pebble feel
+    minWidth: 130,
+    alignItems: 'center',
+    shadowColor: '#4CAF50',     // Green soft shadow for pleasant aura
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+  },
+  speechText: {
+    color: '#2E7D32',           // Rich forest green text (pleasant & high contrast)
+    fontSize: 12,
+    fontFamily: 'Poppins-Bold',
+  },
+  bubbleArrow: {
+    position: 'absolute',
+    top: -6,
+    left: 16,
+    width: 0,
+    height: 0,
+    borderStyle: 'solid',
+    borderLeftWidth: 6,
+    borderRightWidth: 6,
+    borderBottomWidth: 6,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: '#E8F5E9', // Match the soft bubble background exactly
+  },
 });
 
 export default HomeScreen;

@@ -182,7 +182,7 @@ const LoginScreen = ({ navigation }) => {
 
       {/* Header */}
       <Animated.Text style={[styles.headerText, { opacity: headerOpacity }]}>
-        Plants Fresher
+        Florify
       </Animated.Text>
       <Animated.Text style={[styles.subHeaderText, { opacity: subHeaderOpacity }]}>
         LET'S GET STARTED!

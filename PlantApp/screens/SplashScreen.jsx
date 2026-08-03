@@ -46,7 +46,7 @@ const SplashScreen = () => {
           source={require('../assets/app_logo.png')}
           style={styles.logo}
         />
-        <Text style={styles.appName}>Plantify</Text>
+        <Text style={styles.appName}>Florify</Text>
         <Text style={styles.tagline}>Grow Green, Live Clean 🌱</Text>
       </View>
 
